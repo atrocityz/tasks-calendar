@@ -118,3 +118,8 @@
     @apply bg-background text-foreground;
   }
 }
+
+a:not(:disabled),
+button:not(:disabled) {
+  cursor: pointer;
+}
