@@ -1,5 +1,5 @@
 import { type ReactNode, useEffect, useState } from 'react'
-import { ThemeProviderContext, type Theme } from './ThemeProviderContext.tsx'
+import { ThemeProviderContext, type Theme } from './theme-provider-context'
 
 type ThemeProviderProps = {
   children: ReactNode

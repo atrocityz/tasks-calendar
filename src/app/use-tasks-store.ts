@@ -1,13 +1,16 @@
 import { create } from 'zustand'
-import type { Task } from '@/components/TaskCard.tsx'
 import { persist } from 'zustand/middleware'
+import type { Task } from '@/types/task.types'
+
+// TODO: Не нравится то, что состояние модалки находится в сторе, с другой стороны на этом подвязана логика управлением даты (через openModal)
 
 interface TaskStore {
   isModalOpen: boolean
-  currentDate: Date
+  date: Date
   tasks: Record<string, Task[]>
   getTasksByDate: (date: Date) => Task[]
   addTask: (task: Omit<Task, 'id'>) => void
+  deleteTask: (taskId: string) => void
   openModal: (date: Date) => void
   closeModal: () => void
 }
@@ -16,11 +19,11 @@ const dateToId = (date: Date) => {
   return `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`
 }
 
-export const useTaskStore = create<TaskStore>()(
+export const useTasksStore = create<TaskStore>()(
   persist(
     (set, get) => ({
       isModalOpen: false,
-      currentDate: new Date(),
+      date: new Date(),
       tasks: {},
       getTasksByDate: (date: Date) => get().tasks[`${dateToId(date)}`],
       addTask: (task) =>
@@ -28,8 +31,8 @@ export const useTaskStore = create<TaskStore>()(
           ...state,
           tasks: {
             ...state.tasks,
-            [dateToId(state.currentDate)]: [
-              ...(state.tasks[`${dateToId(state.currentDate)}`] || []),
+            [dateToId(state.date)]: [
+              ...(state.tasks[dateToId(state.date)] || []),
               {
                 id: crypto.randomUUID(),
                 ...task,
@@ -37,17 +40,20 @@ export const useTaskStore = create<TaskStore>()(
             ],
           },
         })),
-      openModal: (date) =>
+      deleteTask: (taskId) =>
         set((state) => ({
           ...state,
-          isModalOpen: true,
-          currentDate: date,
+          tasks: {
+            ...state.tasks,
+            [dateToId(state.date)]: [
+              ...state.tasks[dateToId(state.date)].filter(
+                (task) => task.id !== taskId,
+              ),
+            ],
+          },
         })),
-      closeModal: () =>
-        set((state) => ({
-          ...state,
-          isModalOpen: false,
-        })),
+      openModal: (date) => set({ isModalOpen: true, date }),
+      closeModal: () => set({ isModalOpen: false }),
     }),
     {
       name: 'calendar-store',

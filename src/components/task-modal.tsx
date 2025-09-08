@@ -1,4 +1,3 @@
-import { useTaskStore } from '@/components/calendar/calendar.store.ts'
 import { createPortal } from 'react-dom'
 import { X } from 'lucide-react'
 import { Button } from '@/components/ui/button.tsx'
@@ -12,29 +11,28 @@ import {
   SelectValue,
 } from '@/components/ui/select.tsx'
 import { Label } from '@/components/ui/label.tsx'
-import { TaskCard, type TaskTag } from '@/components/TaskCard.tsx'
+import { useTasksStore } from '@/app/use-tasks-store.ts'
+import type { TaskTag } from '@/types/task.types'
+import { TaskCard } from '@/components/task-card'
+
+// TODO: Пофиксить цвета для светлой темы (использовать цвета из переменных в index.css)
 
 export function TaskModal() {
-  const taskStore = useTaskStore()
+  const taskStore = useTasksStore()
 
   const handleOverlayClick = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget) {
-      document.documentElement.classList.remove('is-lock')
       taskStore.closeModal()
     }
   }
 
-  const tasks = taskStore.getTasksByDate(taskStore.currentDate)
+  const tasks = taskStore.getTasksByDate(taskStore.date)
 
-  const onKeyUp = useCallback(
-    (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        document.documentElement.classList.remove('is-lock')
-        taskStore.closeModal()
-      }
-    },
-    [taskStore],
-  )
+  const onKeyUp = useCallback((e: KeyboardEvent) => {
+    if (e.key === 'Escape') {
+      taskStore.closeModal()
+    }
+  }, [])
 
   const onFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -48,31 +46,29 @@ export function TaskModal() {
   }
 
   useEffect(() => {
-    if (!taskStore.isModalOpen) return
-
-    document.documentElement.classList.add('is-lock')
     document.addEventListener('keyup', onKeyUp)
 
     return () => {
       document.removeEventListener('keyup', onKeyUp)
     }
-  }, [onKeyUp, taskStore.isModalOpen])
+  }, [onKeyUp])
 
   return createPortal(
     <div
       className="fixed inset-0 bg-black/50 overflow-y-auto"
-      onClick={handleOverlayClick}
+      onMouseDown={handleOverlayClick}
     >
-      <div className="w-[30%] min-w-[360px] relative top-[10%] left-1/2 -translate-x-1/2 border border-sidebar-border rounded-2xl bg-black p-6 flex flex-col gap-6">
+      <div className="w-[30%] min-w-[360px] relative top-[5%] left-1/2 -translate-x-1/2 border border-sidebar-border rounded-2xl bg-background p-6 flex flex-col gap-6">
         <Button
           className="self-end"
           onClick={taskStore.closeModal}
           aria-label="Закрыть"
           title="Закрыть"
+          size="icon"
         >
           <X size={32} />
         </Button>
-        <p className="self-center text-2xl">{`${taskStore.currentDate.getDate()}, ${taskStore.currentDate.getMonth() + 1}, ${taskStore.currentDate.getFullYear()}`}</p>
+        <p className="self-center text-2xl">{`${taskStore.date.getDate()}, ${taskStore.date.getMonth() + 1}, ${taskStore.date.getFullYear()}`}</p>
         <form onSubmit={(e) => onFormSubmit(e)} className="flex flex-col gap-6">
           <div className="grid gap-2">
             <Label htmlFor="task-name">Название задачи</Label>
@@ -92,12 +88,23 @@ export function TaskModal() {
               <SelectItem value="Другое">Другое</SelectItem>
             </SelectContent>
           </Select>
-          <Button type="submit" className="self-center mt-auto">
+          <Button
+            type="submit"
+            className="self-center mt-auto"
+            variant="outline"
+          >
             Создать задачу
           </Button>
         </form>
         <ul className="grid gap-2">
-          {tasks && tasks.map((task) => <TaskCard key={task.id} task={task} />)}
+          {tasks &&
+            tasks.map((task) => (
+              <TaskCard
+                key={task.id}
+                task={task}
+                onDelete={taskStore.deleteTask}
+              />
+            ))}
         </ul>
       </div>
     </div>,
