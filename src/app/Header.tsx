@@ -1,5 +1,5 @@
 import { Calendar } from 'lucide-react'
-import { ThemeToggler } from '@/components/theme/ThemeToggler'
+import { ThemeToggler } from '@/components/theme/ThemeToggler.tsx'
 
 export function Header() {
   return (

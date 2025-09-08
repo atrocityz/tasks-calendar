@@ -12,7 +12,9 @@ import {
 } from 'date-fns'
 import { ru } from 'date-fns/locale'
 import { useState } from 'react'
-import { cn } from '@/lib/utils.ts'
+import { CalendarDay } from '@/components/calendar/CalendarDay.tsx'
+import { TaskModal } from '@/components/TaskModal.tsx'
+import { useTaskStore } from '@/components/calendar/calendar.store.ts'
 
 // TODO: Сто проц можно как-то без состояния года изменять его относительно месяца
 // TODO: Вынести компоненты
@@ -23,6 +25,7 @@ export function Calendar() {
     getMonth(new Date()),
   )
   const [currentYear, setCurrentYear] = useState(getYear(new Date()))
+  const { isModalOpen } = useTaskStore()
 
   const getCalendarDays = (date: Date) => {
     const monthStart = startOfMonth(date)
@@ -47,7 +50,7 @@ export function Calendar() {
     { locale: ru },
   )
 
-  const days = getCalendarDays(new Date(currentYear, currentMonthIndex))
+  const calendarDays = getCalendarDays(new Date(currentYear, currentMonthIndex))
   const weekdays = [...Array(7)].map((_, i) =>
     new Intl.DateTimeFormat('ru', { weekday: 'short' })
       .format(new Date(2023, 0, i + 2))
@@ -94,23 +97,14 @@ export function Calendar() {
             {weekday}
           </span>
         ))}
-        {days.map((day) => (
-          <button
-            key={`${day.getFullYear()}-${day.getMonth()}-${day.getDate()}`}
-            className={cn(
-              'py-10 text-xl border-sidebar-border hover:bg-accent/20 not-[:nth-last-child(-n+7)]:border-b not-[:nth-child(7n)]:border-r',
-              {
-                'bg-muted/30': day.getMonth() !== currentMonthIndex,
-              },
-            )}
-          >
-            <time
-              dateTime={`${day.getFullYear()}-${day.getMonth()}-${day.getDate()}`}
-            >
-              {day.getDate()}
-            </time>
-          </button>
+        {calendarDays.map((calendarDate) => (
+          <CalendarDay
+            date={calendarDate}
+            isCurrentMonth={calendarDate.getMonth() === currentMonthIndex}
+            key={`${calendarDate.getFullYear()}-${calendarDate.getMonth()}-${calendarDate.getDate()}`}
+          />
         ))}
+        {isModalOpen && <TaskModal />}
       </div>
     </div>
   )

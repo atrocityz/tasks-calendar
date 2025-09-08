@@ -123,3 +123,7 @@ a:not(:disabled),
 button:not(:disabled) {
   cursor: pointer;
 }
+
+html.is-lock {
+  overflow: hidden;
+}
