@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import {
   eachDayOfInterval,
   endOfMonth,
@@ -26,14 +26,21 @@ const getCalendarDays = (date: Date) => {
   })
 }
 
+// Хук переписать на zustand
 export function useCalendar() {
   const [currentDate, setCurrentDate] = useState(new Date())
 
   const calendarDays = getCalendarDays(currentDate)
-  const weekdays = [...Array(7)].map((_, i) =>
-    new Intl.DateTimeFormat('ru', { weekday: 'short' })
-      .format(new Date(2023, 0, i + 2))
-      .replace(/^./, (c) => c.toUpperCase()),
+
+  // Это вынести из хука
+  const weekdays = useMemo(
+    () =>
+      [...Array(7)].map((_, i) =>
+        new Intl.DateTimeFormat('ru', { weekday: 'short' })
+          .format(new Date(2023, 0, i + 2))
+          .replace(/^./, (c) => c.toUpperCase()),
+      ),
+    [],
   )
 
   const handlePrevButtonClick = () => {

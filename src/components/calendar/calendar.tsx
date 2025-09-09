@@ -3,17 +3,12 @@ import { NextButton } from '@/components/calendar/ui/next-button'
 import { PrevButton } from '@/components/calendar/ui/prev-button'
 import { useCalendar } from '@/components/calendar/use-calendar'
 import { Day } from '@/components/calendar/ui/day'
-import { format, getMonth, getYear, isSameMonth } from 'date-fns'
+import { format, isSameMonth } from 'date-fns'
 import { ru } from 'date-fns/locale'
-import type { Task } from '@/types/task.types'
+import { useTasksStore } from '@/stores/use-tasks-store'
+import { useTaskModalStore } from '@/stores/use-task-modal-store'
 
-export function Calendar({
-  openModal,
-  getTasksByDate,
-}: {
-  openModal: (date: Date) => void
-  getTasksByDate: (date: Date) => Task[]
-}) {
+export function Calendar() {
   const {
     handleNextButtonClick,
     handlePrevButtonClick,
@@ -21,22 +16,17 @@ export function Calendar({
     calendarDays,
     currentDate,
   } = useCalendar()
+  const { getTasksByDate } = useTasksStore()
+  const { openModal } = useTaskModalStore()
 
-  const currentMonth = format(
-    new Date(getYear(currentDate), getMonth(currentDate), 1),
-    'LLLL',
-    { locale: ru },
-  )
-  const currentYear = getYear(currentDate)
+  const formattedDate = format(currentDate, 'LLLL, yyyy', { locale: ru })
 
   return (
     <Layout
       header={
         <>
           <PrevButton onClick={handlePrevButtonClick} />
-          <h2 className="text-xl capitalize">
-            {currentMonth}, {currentYear}
-          </h2>
+          <h2 className="text-xl capitalize">{formattedDate}</h2>
           <NextButton onClick={handleNextButtonClick} />
         </>
       }
@@ -50,9 +40,9 @@ export function Calendar({
       ))}
       calendarDays={calendarDays.map((calendarDate) => (
         <Day
-          openModal={() => openModal(calendarDate)}
-          tasks={getTasksByDate(calendarDate)}
+          onClick={() => openModal(calendarDate)}
           date={calendarDate}
+          tasks={getTasksByDate(calendarDate)}
           isCurrentMonth={isSameMonth(calendarDate, currentDate)}
           key={`${calendarDate.getFullYear()}-${calendarDate.getMonth()}-${calendarDate.getDate()}`}
         />

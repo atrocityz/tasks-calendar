@@ -124,6 +124,10 @@ button:not(:disabled) {
   cursor: pointer;
 }
 
+.html {
+  scrollbar-gutter: stable;
+}
+
 html.is-lock {
   overflow: hidden;
 }

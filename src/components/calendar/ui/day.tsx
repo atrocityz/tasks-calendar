@@ -5,12 +5,12 @@ import type { Task } from '@/types/task.types'
 export function Day({
   date,
   isCurrentMonth,
-  openModal,
+  onClick,
   tasks,
 }: {
   date: Date
   isCurrentMonth: boolean
-  openModal: () => void
+  onClick: () => void
   tasks: Task[]
 }) {
   return (
@@ -22,7 +22,7 @@ export function Day({
           'bg-gray-600': isToday(date),
         },
       )}
-      onClick={openModal}
+      onClick={onClick}
     >
       <time
         dateTime={`${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`}

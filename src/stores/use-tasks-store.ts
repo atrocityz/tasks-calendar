@@ -5,14 +5,10 @@ import type { Task } from '@/types/task.types'
 // TODO: Не нравится то, что состояние модалки находится в сторе, с другой стороны на этом подвязана логика управлением даты (через openModal)
 
 interface TaskStore {
-  isModalOpen: boolean
-  date: Date
   tasks: Record<string, Task[]>
   getTasksByDate: (date: Date) => Task[]
-  addTask: (task: Omit<Task, 'id'>) => void
-  deleteTask: (taskId: string) => void
-  openModal: (date: Date) => void
-  closeModal: () => void
+  addTask: (date: Date, task: Omit<Task, 'id'>) => void
+  deleteTask: (date: Date, taskId: string) => void
 }
 
 const dateToId = (date: Date) => {
@@ -22,17 +18,15 @@ const dateToId = (date: Date) => {
 export const useTasksStore = create<TaskStore>()(
   persist(
     (set, get) => ({
-      isModalOpen: false,
-      date: new Date(),
       tasks: {},
-      getTasksByDate: (date: Date) => get().tasks[`${dateToId(date)}`],
-      addTask: (task) =>
+      getTasksByDate: (date: Date) => get().tasks[dateToId(date)],
+      addTask: (date, task) =>
         set((state) => ({
           ...state,
           tasks: {
             ...state.tasks,
-            [dateToId(state.date)]: [
-              ...(state.tasks[dateToId(state.date)] || []),
+            [dateToId(date)]: [
+              ...(state.tasks[dateToId(date)] || []),
               {
                 id: crypto.randomUUID(),
                 ...task,
@@ -40,23 +34,21 @@ export const useTasksStore = create<TaskStore>()(
             ],
           },
         })),
-      deleteTask: (taskId) =>
+      deleteTask: (date, taskId) =>
         set((state) => ({
           ...state,
           tasks: {
             ...state.tasks,
-            [dateToId(state.date)]: [
-              ...state.tasks[dateToId(state.date)].filter(
+            [dateToId(date)]: [
+              ...state.tasks[dateToId(date)].filter(
                 (task) => task.id !== taskId,
               ),
             ],
           },
         })),
-      openModal: (date) => set({ isModalOpen: true, date }),
-      closeModal: () => set({ isModalOpen: false }),
     }),
     {
-      name: 'calendar-store',
+      name: 'tasks',
       partialize: (state) => ({
         tasks: state.tasks,
       }),

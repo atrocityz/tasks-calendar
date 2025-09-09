@@ -3,13 +3,7 @@ import type { Task } from '@/types/task.types'
 import { Button } from '@/components/ui/button'
 import { X } from 'lucide-react'
 
-export function TaskCard({
-  task,
-  onDelete,
-}: {
-  task: Task
-  onDelete: (taskId: string) => void
-}) {
+export function Card({ task, onDelete }: { task: Task; onDelete: () => void }) {
   return (
     <li className="flex justify-between bg-transparent border border-sidebar-border p-4 rounded gap-4">
       <div className="grid gap-2">
@@ -36,7 +30,7 @@ export function TaskCard({
         {task.description && <p className="text-[14px]">{task.description}</p>}
       </div>
       <Button
-        onClick={() => onDelete(task.id)}
+        onClick={onDelete}
         aria-label="Удалить задачу"
         title="Удалить задачу"
         variant="destructive"
