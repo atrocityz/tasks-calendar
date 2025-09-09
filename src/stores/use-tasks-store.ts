@@ -2,8 +2,6 @@ import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import type { Task } from '@/types/task.types'
 
-// TODO: Не нравится то, что состояние модалки находится в сторе, с другой стороны на этом подвязана логика управлением даты (через openModal)
-
 interface TaskStore {
   tasks: Record<string, Task[]>
   getTasksByDate: (date: Date) => Task[]

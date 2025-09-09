@@ -124,8 +124,8 @@ button:not(:disabled) {
   cursor: pointer;
 }
 
-.html {
-  scrollbar-gutter: stable;
+html {
+  scrollbar-color: var(--muted-foreground) var(--muted);
 }
 
 html.is-lock {

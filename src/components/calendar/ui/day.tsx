@@ -16,10 +16,10 @@ export function Day({
   return (
     <button
       className={cn(
-        'relative py-5 md:py-10 text-xl border-sidebar-border hover:bg-accent/20 not-[:nth-last-child(-n+7)]:border-b not-[:nth-child(7n)]:border-r',
+        'relative py-5 md:py-10 text-xl border-sidebar-border hover:opacity-70 not-[:nth-last-child(-n+7)]:border-b not-[:nth-child(7n)]:border-r transition-opacity',
         {
           'bg-muted/30': !isCurrentMonth,
-          'bg-gray-600': isToday(date),
+          'bg-green-300/20': isToday(date),
         },
       )}
       onClick={onClick}

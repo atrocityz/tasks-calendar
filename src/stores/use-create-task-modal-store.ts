@@ -7,7 +7,7 @@ interface TaskModalStore {
   closeModal: () => void
 }
 
-export const useTaskModalStore = create<TaskModalStore>((set) => ({
+export const useCreateTaskModalStore = create<TaskModalStore>((set) => ({
   date: new Date(),
   isOpen: false,
   openModal: (date) => set({ date, isOpen: true }),

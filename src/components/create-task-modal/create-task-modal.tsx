@@ -5,19 +5,20 @@ import { type FormEvent } from 'react'
 import type { TaskTag } from '@/types/task.types'
 import { format } from 'date-fns'
 import { ru } from 'date-fns/locale'
-import { useTaskModalStore } from '@/stores/use-task-modal-store'
+import { useCreateTaskModalStore } from '@/stores/use-create-task-modal-store'
 import { useTasksStore } from '@/stores/use-tasks-store'
 import { Layout } from '@/components/create-task-modal/ui/layout'
-import { useModal } from '@/components/create-task-modal/use-modal'
+import { useModalEffects } from '@/components/create-task-modal/use-modal-effects'
 import { CreateForm } from '@/components/create-task-modal/ui/create-form'
 import { Card } from '@/components/create-task-modal/ui/card'
 
-// Переделать форму под react-hook-form
-// Новая задача должна появляться выше??
+// TODO: Переделать форму под react-hook-form
+// TODO: Новая задача должна появляться выше??
+// TODO: Возможно перенести список задач как выдвигающуюся панель справа и там уже список задач??
 export function CreateTaskModal() {
   const { getTasksByDate, addTask, deleteTask } = useTasksStore()
-  const { closeModal, isOpen, date } = useTaskModalStore()
-  const { handleOverlayClick } = useModal(isOpen, closeModal)
+  const { closeModal, isOpen, date } = useCreateTaskModalStore()
+  const { handleOverlayClick } = useModalEffects(isOpen, closeModal)
 
   const tasks = getTasksByDate(date)
 
@@ -37,7 +38,7 @@ export function CreateTaskModal() {
   return createPortal(
     <div
       className="fixed inset-0 bg-black/50 overflow-y-auto"
-      onMouseDown={handleOverlayClick}
+      onClick={handleOverlayClick}
     >
       <Layout
         closeButton={
@@ -58,14 +59,19 @@ export function CreateTaskModal() {
         }
         form={<CreateForm onSubmit={onFormSubmit} />}
         tasks={
-          tasks &&
-          tasks.map((task) => (
-            <Card
-              key={task.id}
-              task={task}
-              onDelete={() => deleteTask(date, task.id)}
-            />
-          ))
+          tasks && tasks.length > 0 ? (
+            tasks.map((task) => (
+              <Card
+                key={task.id}
+                task={task}
+                onDelete={() => deleteTask(date, task.id)}
+              />
+            ))
+          ) : (
+            <span className="text-muted-foreground/70">
+              Список задач пуст...
+            </span>
+          )
         }
       />
     </div>,

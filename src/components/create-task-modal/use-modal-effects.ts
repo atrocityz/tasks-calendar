@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react'
 
-export function useModal(isOpen: boolean, closeModal: () => void) {
+export function useModalEffects(isOpen: boolean, closeModal: () => void) {
   const onKeyUp = useCallback(
     (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -34,8 +34,6 @@ export function useModal(isOpen: boolean, closeModal: () => void) {
   }, [isOpen])
 
   return {
-    isOpen,
-    closeModal,
     handleOverlayClick,
   }
 }

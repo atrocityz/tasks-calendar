@@ -6,7 +6,7 @@ import { Day } from '@/components/calendar/ui/day'
 import { format, isSameMonth } from 'date-fns'
 import { ru } from 'date-fns/locale'
 import { useTasksStore } from '@/stores/use-tasks-store'
-import { useTaskModalStore } from '@/stores/use-task-modal-store'
+import { useCreateTaskModalStore } from '@/stores/use-create-task-modal-store'
 
 export function Calendar() {
   const {
@@ -17,7 +17,7 @@ export function Calendar() {
     currentDate,
   } = useCalendar()
   const { getTasksByDate } = useTasksStore()
-  const { openModal } = useTaskModalStore()
+  const { openModal } = useCreateTaskModalStore()
 
   const formattedDate = format(currentDate, 'LLLL, yyyy', { locale: ru })
 
