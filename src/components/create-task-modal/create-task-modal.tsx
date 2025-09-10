@@ -5,20 +5,24 @@ import { type FormEvent } from 'react'
 import type { TaskTag } from '@/types/task.types'
 import { format } from 'date-fns'
 import { ru } from 'date-fns/locale'
-import { useCreateTaskModalStore } from '@/stores/use-create-task-modal-store'
 import { useTasksStore } from '@/stores/use-tasks-store'
 import { Layout } from '@/components/create-task-modal/ui/layout'
-import { useModalEffects } from '@/components/create-task-modal/use-modal-effects'
 import { CreateForm } from '@/components/create-task-modal/ui/create-form'
 import { Card } from '@/components/create-task-modal/ui/card'
 
 // TODO: Переделать форму под react-hook-form
 // TODO: Новая задача должна появляться выше??
 // TODO: Возможно перенести список задач как выдвигающуюся панель справа и там уже список задач??
-export function CreateTaskModal() {
+export function CreateTaskModal({
+  date,
+  closeModal,
+  handleOverlayClick,
+}: {
+  date: Date
+  closeModal: () => void
+  handleOverlayClick: (e: React.MouseEvent) => void
+}) {
   const { getTasksByDate, addTask, deleteTask } = useTasksStore()
-  const { closeModal, isOpen, date } = useCreateTaskModalStore()
-  const { handleOverlayClick } = useModalEffects(isOpen, closeModal)
 
   const tasks = getTasksByDate(date)
 
@@ -32,8 +36,6 @@ export function CreateTaskModal() {
       description: String(formData.get('task-description')) || undefined,
     })
   }
-
-  if (!isOpen) return null
 
   return createPortal(
     <div

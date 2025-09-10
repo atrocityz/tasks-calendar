@@ -1,8 +1,9 @@
 import { cn } from '@/lib/utils.ts'
 import { isToday } from 'date-fns'
 import type { Task } from '@/types/task.types'
+import { memo } from 'react'
 
-export function Day({
+function Day({
   date,
   isCurrentMonth,
   onClick,
@@ -37,3 +38,5 @@ export function Day({
     </button>
   )
 }
+
+export const MemoizedDay = memo(Day)

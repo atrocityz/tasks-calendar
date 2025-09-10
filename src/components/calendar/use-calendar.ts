@@ -29,10 +29,10 @@ const getCalendarDays = (date: Date) => {
 // Хук переписать на zustand
 export function useCalendar() {
   const [currentDate, setCurrentDate] = useState(new Date())
+  const [selectedDate, setSelectedDate] = useState(new Date())
 
   const calendarDays = getCalendarDays(currentDate)
 
-  // Это вынести из хука
   const weekdays = useMemo(
     () =>
       [...Array(7)].map((_, i) =>
@@ -69,5 +69,7 @@ export function useCalendar() {
     calendarDays,
     weekdays,
     currentDate,
+    selectedDate,
+    setSelectedDate,
   }
 }
