@@ -8,6 +8,7 @@ import { Layout } from '@/components/create-task-modal/ui/layout'
 import { CreateTaskForm } from '@/components/create-task-modal/create-task-form'
 import { Card } from '@/components/create-task-modal/ui/card'
 import type { UseFormReset } from 'react-hook-form'
+import { toast } from 'sonner'
 
 // TODO: Возможно перенести список задач как выдвигающуюся панель справа и там уже список задач?? (drawer)
 export function CreateTaskModal({
@@ -32,6 +33,8 @@ export function CreateTaskModal({
       description: data.taskDescription || undefined,
     })
     reset()
+
+    toast('Задача успешно создана!')
   }
 
   return createPortal(
@@ -63,7 +66,10 @@ export function CreateTaskModal({
               <Card
                 key={task.id}
                 task={task}
-                onDelete={() => deleteTask(date, task.id)}
+                onDelete={() => {
+                  deleteTask(date, task.id)
+                  toast('Задача успешно удалена!')
+                }}
               />
             ))
           ) : (

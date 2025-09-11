@@ -48,9 +48,10 @@ export function CreateTaskForm({
           <Controller
             name="taskName"
             control={control}
-            rules={{ required: 'Введите имя для задачи!' }}
+            rules={{ required: 'Введите название задачи!' }}
             render={({ field }) => (
               <Input
+                id="task-name"
                 onChange={field.onChange}
                 value={field.value}
                 aria-invalid={errors.taskName ? 'true' : 'false'}
@@ -68,7 +69,7 @@ export function CreateTaskForm({
         <Controller
           name="taskTagList"
           control={control}
-          rules={{ required: 'Выберите тэг для задачи!' }}
+          rules={{ required: 'Выберите тэг задачи!' }}
           render={({ field }) => (
             <Select
               onValueChange={field.onChange}
