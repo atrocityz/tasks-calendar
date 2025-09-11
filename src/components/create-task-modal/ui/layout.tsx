@@ -1,3 +1,5 @@
+import { Button } from '@/components/ui/button'
+import { Drawer, DrawerContent, DrawerTrigger } from '@/components/ui/drawer'
 import type { ReactNode } from 'react'
 
 export function Layout({
@@ -16,7 +18,14 @@ export function Layout({
       {closeButton}
       {header}
       {form}
-      <ul className="grid gap-2 overflow-y-auto py-2">{tasks}</ul>
+      <Drawer direction="right">
+        <DrawerTrigger>
+          <Button>Список задач</Button>
+        </DrawerTrigger>
+        <DrawerContent className="p-3">
+          <ul className="grid gap-2 overflow-y-auto py-2">{tasks}</ul>
+        </DrawerContent>
+      </Drawer>
     </div>
   )
 }

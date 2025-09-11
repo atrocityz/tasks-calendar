@@ -3,7 +3,7 @@ import type { Task } from '@/types/task.types'
 import { Button } from '@/components/ui/button'
 import { X } from 'lucide-react'
 
-export function Card({ task, onDelete }: { task: Task; onDelete: () => void }) {
+export function Task({ task, onDelete }: { task: Task; onDelete: () => void }) {
   return (
     <li className="flex justify-between bg-transparent border border-sidebar-border p-4 rounded gap-4">
       <div className="grid gap-2">

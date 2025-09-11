@@ -6,11 +6,10 @@ import { ru } from 'date-fns/locale'
 import { useTasksStore } from '@/stores/use-tasks-store'
 import { Layout } from '@/components/create-task-modal/ui/layout'
 import { CreateTaskForm } from '@/components/create-task-modal/create-task-form'
-import { Card } from '@/components/create-task-modal/ui/card'
+import { Task } from '@/components/create-task-modal/ui/task'
 import type { UseFormReset } from 'react-hook-form'
 import { toast } from 'sonner'
 
-// TODO: Возможно перенести список задач как выдвигающуюся панель справа и там уже список задач?? (drawer)
 export function CreateTaskModal({
   date,
   closeModal,
@@ -40,7 +39,7 @@ export function CreateTaskModal({
   return createPortal(
     <div
       className="fixed inset-0 bg-black/50 overflow-y-auto"
-      onClick={handleOverlayClick}
+      onMouseDown={handleOverlayClick}
     >
       <Layout
         closeButton={
@@ -63,7 +62,7 @@ export function CreateTaskModal({
         tasks={
           tasks?.length > 0 ? (
             tasks.map((task) => (
-              <Card
+              <Task
                 key={task.id}
                 task={task}
                 onDelete={() => {
@@ -74,7 +73,7 @@ export function CreateTaskModal({
             ))
           ) : (
             <span className="text-muted-foreground/70">
-              Список задач пуст...
+              Список задач на выбранный день пуст...
             </span>
           )
         }
