@@ -24,11 +24,11 @@ export const useTasksStore = create<TaskStore>()(
           tasks: {
             ...state.tasks,
             [dateToId(date)]: [
-              ...(state.tasks[dateToId(date)] || []),
               {
                 id: crypto.randomUUID(),
                 ...task,
               },
+              ...(state.tasks[dateToId(date)] || []),
             ],
           },
         })),

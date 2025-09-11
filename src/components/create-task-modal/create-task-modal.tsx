@@ -1,18 +1,15 @@
 import { createPortal } from 'react-dom'
 import { X } from 'lucide-react'
 import { Button } from '@/components/ui/button.tsx'
-import { type FormEvent } from 'react'
-import type { TaskTag } from '@/types/task.types'
 import { format } from 'date-fns'
 import { ru } from 'date-fns/locale'
 import { useTasksStore } from '@/stores/use-tasks-store'
 import { Layout } from '@/components/create-task-modal/ui/layout'
-import { CreateForm } from '@/components/create-task-modal/ui/create-form'
+import { CreateTaskForm } from '@/components/create-task-modal/create-task-form'
 import { Card } from '@/components/create-task-modal/ui/card'
+import type { UseFormReset } from 'react-hook-form'
 
-// TODO: Переделать форму под react-hook-form
-// TODO: Новая задача должна появляться выше??
-// TODO: Возможно перенести список задач как выдвигающуюся панель справа и там уже список задач??
+// TODO: Возможно перенести список задач как выдвигающуюся панель справа и там уже список задач?? (drawer)
 export function CreateTaskModal({
   date,
   closeModal,
@@ -23,18 +20,18 @@ export function CreateTaskModal({
   handleOverlayClick: (e: React.MouseEvent) => void
 }) {
   const { getTasksByDate, addTask, deleteTask } = useTasksStore()
-
   const tasks = getTasksByDate(date)
 
-  const onFormSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    const formData = new FormData(e.currentTarget)
-
+  const onFormSubmit = (
+    data: CreateTaskForm,
+    reset: UseFormReset<CreateTaskForm>,
+  ) => {
     addTask(date, {
-      name: String(formData.get('task-name')),
-      tag: String(formData.get('task-tag-select')) as TaskTag,
-      description: String(formData.get('task-description')) || undefined,
+      name: data.taskName,
+      tag: data.taskTagList,
+      description: data.taskDescription || undefined,
     })
+    reset()
   }
 
   return createPortal(
@@ -59,9 +56,9 @@ export function CreateTaskModal({
             {format(date, 'd MMMM yyyy', { locale: ru })}
           </p>
         }
-        form={<CreateForm onSubmit={onFormSubmit} />}
+        form={<CreateTaskForm onSubmit={onFormSubmit} />}
         tasks={
-          tasks && tasks.length > 0 ? (
+          tasks?.length > 0 ? (
             tasks.map((task) => (
               <Card
                 key={task.id}
