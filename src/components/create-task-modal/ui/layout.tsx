@@ -1,4 +1,3 @@
-import { Button } from '@/components/ui/button'
 import { Drawer, DrawerContent, DrawerTrigger } from '@/components/ui/drawer'
 import type { ReactNode } from 'react'
 
@@ -19,12 +18,10 @@ export function Layout({
       {header}
       {form}
       <Drawer direction="right">
-        <DrawerTrigger>
-          <Button>Список задач</Button>
+        <DrawerTrigger className="self-center opacity-70 underline hover:opacity-100 transition-opacity">
+          Открыть весь список задач
         </DrawerTrigger>
-        <DrawerContent className="p-3">
-          <ul className="grid gap-2 overflow-y-auto py-2">{tasks}</ul>
-        </DrawerContent>
+        <DrawerContent className="p-3">{tasks}</DrawerContent>
       </Drawer>
     </div>
   )

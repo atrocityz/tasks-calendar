@@ -5,21 +5,19 @@ import { X } from 'lucide-react'
 
 export function Task({ task, onDelete }: { task: Task; onDelete: () => void }) {
   return (
-    <li className="flex justify-between bg-transparent border border-sidebar-border p-4 rounded gap-4">
+    <li
+      className={cn(
+        'flex justify-between bg-transparent border border-sidebar-border p-4 rounded gap-4',
+        {
+          'border-red-900': task.important === 'Высокая',
+          'border-orange-400': task.important === 'Средняя',
+          'border-green-900': task.important === 'Низкая',
+        },
+      )}
+    >
+      <span className="sr-only">{task.important} важность задачи</span>
       <div className="grid gap-2">
         <div className="grid gap-2">
-          <span
-            className={cn(
-              'py-1 px-2 text-[14px] rounded font-bold w-max text-white',
-              {
-                'bg-amber-800': task.tag === 'Другое',
-                'bg-green-800': task.tag === 'Личное',
-                'bg-blue-800': task.tag === 'Работа',
-              },
-            )}
-          >
-            {task.tag}
-          </span>
           <h2
             className="truncate w-70 md:w-full text-xl md:text-wrap"
             title={task.name}

@@ -9,13 +9,13 @@ import {
 } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
 import { Controller, useForm, type UseFormReset } from 'react-hook-form'
-import type { TaskTag } from '@/types/task.types'
+import type { TaskImportant } from '@/types/task.types'
 import { Error } from '@/components/ui/error'
 
 export type CreateTaskForm = {
   taskName: string
   taskDescription?: string
-  taskTagList: TaskTag
+  taskImportant: TaskImportant
 }
 
 export function CreateTaskForm({
@@ -33,7 +33,7 @@ export function CreateTaskForm({
     defaultValues: {
       taskName: '',
       taskDescription: '',
-      taskTagList: '' as TaskTag,
+      taskImportant: '' as TaskImportant,
     },
   })
 
@@ -67,27 +67,36 @@ export function CreateTaskForm({
       </div>
       <div className="grid gap-1">
         <Controller
-          name="taskTagList"
+          name="taskImportant"
           control={control}
-          rules={{ required: 'Выберите тэг задачи!' }}
+          rules={{ required: 'Выберите важность задачи!' }}
           render={({ field }) => (
             <Select
               onValueChange={field.onChange}
               value={field.value}
-              aria-invalid={errors.taskTagList ? 'true' : 'false'}
+              aria-invalid={errors.taskImportant ? 'true' : 'false'}
             >
               <SelectTrigger className="w-[160px]">
-                <SelectValue placeholder="Выберите тег" />
+                <SelectValue placeholder="Важность задачи" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="Личное">Личное</SelectItem>
-                <SelectItem value="Работа">Работа</SelectItem>
-                <SelectItem value="Другое">Другое</SelectItem>
+                <SelectItem className="flex items-center gap-1" value="Высокая">
+                  <span className="w-2 h-2 bg-red-900 rounded-full"></span>
+                  Высокая
+                </SelectItem>
+                <SelectItem value="Средняя">
+                  <span className="w-2 h-2 bg-orange-400 rounded-full"></span>
+                  Средняя
+                </SelectItem>
+                <SelectItem value="Низкая">
+                  <span className="w-2 h-2 bg-green-900 rounded-full"></span>
+                  Низкая
+                </SelectItem>
               </SelectContent>
             </Select>
           )}
         />
-        {errors.taskTagList && <Error>{errors.taskTagList.message}</Error>}
+        {errors.taskImportant && <Error>{errors.taskImportant.message}</Error>}
       </div>
       <Button type="submit" className="self-center mt-auto" variant="outline">
         Создать задачу

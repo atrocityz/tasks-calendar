@@ -28,7 +28,7 @@ export function CreateTaskModal({
   ) => {
     addTask(date, {
       name: data.taskName,
-      tag: data.taskTagList,
+      important: data.taskImportant,
       description: data.taskDescription || undefined,
     })
     reset()
@@ -61,16 +61,18 @@ export function CreateTaskModal({
         form={<CreateTaskForm onSubmit={onFormSubmit} />}
         tasks={
           tasks?.length > 0 ? (
-            tasks.map((task) => (
-              <Task
-                key={task.id}
-                task={task}
-                onDelete={() => {
-                  deleteTask(date, task.id)
-                  toast('Задача успешно удалена!')
-                }}
-              />
-            ))
+            <ul className="grid gap-2 overflow-y-auto py-2">
+              {tasks.map((task) => (
+                <Task
+                  key={task.id}
+                  task={task}
+                  onDelete={() => {
+                    deleteTask(date, task.id)
+                    toast('Задача успешно удалена!')
+                  }}
+                />
+              ))}
+            </ul>
           ) : (
             <span className="text-muted-foreground/70">
               Список задач на выбранный день пуст...

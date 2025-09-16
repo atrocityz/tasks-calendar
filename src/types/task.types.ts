@@ -1,8 +1,8 @@
-export type TaskTag = 'Личное' | 'Работа' | 'Другое'
+export type TaskImportant = 'Высокая' | 'Средняя' | 'Низкая'
 
 export interface Task {
   id: string
   name: string
   description?: string
-  tag: TaskTag
+  important: TaskImportant
 }
