@@ -1,4 +1,11 @@
-import { Drawer, DrawerContent, DrawerTrigger } from '@/components/ui/drawer'
+import {
+  Drawer,
+  DrawerContent,
+  DrawerDescription,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from '@/components/ui/drawer'
 import type { ReactNode } from 'react'
 
 export function Layout({
@@ -19,9 +26,19 @@ export function Layout({
       {form}
       <Drawer direction="right">
         <DrawerTrigger className="self-center opacity-70 underline hover:opacity-100 transition-opacity">
-          Открыть весь список задач
+          Открыть список задач
         </DrawerTrigger>
-        <DrawerContent className="p-3">{tasks}</DrawerContent>
+        <DrawerContent className="p-3">
+          <DrawerHeader className="p-0 pb-2">
+            <DrawerTitle className="text-xl text-center">
+              Список задач
+            </DrawerTitle>
+            <DrawerDescription className="sr-only">
+              Список всех задач на выбранный день
+            </DrawerDescription>
+          </DrawerHeader>
+          {tasks}
+        </DrawerContent>
       </Drawer>
     </div>
   )

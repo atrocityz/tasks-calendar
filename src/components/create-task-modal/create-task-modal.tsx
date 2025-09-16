@@ -75,7 +75,7 @@ export function CreateTaskModal({
             </ul>
           ) : (
             <span className="text-muted-foreground/70">
-              Список задач на выбранный день пуст...
+              Список задач пуст...
             </span>
           )
         }
