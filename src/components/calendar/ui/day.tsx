@@ -1,18 +1,17 @@
 import { cn } from '@/lib/utils.ts'
 import { isToday } from 'date-fns'
-import type { Task } from '@/types/task.types'
 import { memo } from 'react'
 
 function Day({
   date,
   isCurrentMonth,
   onClick,
-  tasks,
+  tasksCount,
 }: {
   date: Date
   isCurrentMonth: boolean
   onClick: () => void
-  tasks: Task[]
+  tasksCount?: number
 }) {
   return (
     <button
@@ -30,9 +29,9 @@ function Day({
       >
         {date.getDate()}
       </time>
-      {tasks?.length > 0 && (
+      {tasksCount && tasksCount > 0 && (
         <span className="absolute md:bottom-3 md:right-3 bottom-1 right-0.5 rounded-full bg-accent-foreground text-background md:w-8 md:h-8 w-5 h-5 text-[14px] md:text-[16px] leading-none flex items-center justify-center">
-          {tasks.length}
+          {tasksCount}
         </span>
       )}
     </button>
