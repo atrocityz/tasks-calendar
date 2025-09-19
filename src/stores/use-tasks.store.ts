@@ -4,31 +4,25 @@ import type { Task } from '@/types/task.types'
 
 interface TaskStore {
   tasks: Record<string, Task[]>
-  getTasksByDate: (date: Date) => Task[]
   addTask: (date: Date, task: Omit<Task, 'id'>) => void
   deleteTask: (date: Date, taskId: string) => void
 }
 
-const dateToId = (date: Date) => {
-  return `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`
-}
-
 export const useTasksStore = create<TaskStore>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       tasks: {},
-      getTasksByDate: (date: Date) => get().tasks[dateToId(date)],
       addTask: (date, task) =>
         set((state) => ({
           ...state,
           tasks: {
             ...state.tasks,
-            [dateToId(date)]: [
+            [JSON.stringify(date)]: [
               {
                 id: crypto.randomUUID(),
                 ...task,
               },
-              ...(state.tasks[dateToId(date)] || []),
+              ...(state.tasks[JSON.stringify(date)] || []),
             ],
           },
         })),
@@ -37,8 +31,8 @@ export const useTasksStore = create<TaskStore>()(
           ...state,
           tasks: {
             ...state.tasks,
-            [dateToId(date)]: [
-              ...state.tasks[dateToId(date)].filter(
+            [JSON.stringify(date)]: [
+              ...state.tasks[JSON.stringify(date)].filter(
                 (task) => task.id !== taskId,
               ),
             ],

@@ -3,7 +3,7 @@ import { X } from 'lucide-react'
 import { Button } from '@/components/ui/button.tsx'
 import { format } from 'date-fns'
 import { ru } from 'date-fns/locale'
-import { useTasksStore } from '@/stores/use-tasks-store'
+import { useTasksStore } from '@/stores/use-tasks.store.ts'
 import { Layout } from '@/components/create-task-modal/ui/layout'
 import { CreateTaskForm } from '@/components/create-task-modal/create-task-form'
 import { Task } from '@/components/create-task-modal/ui/task'
@@ -19,8 +19,8 @@ export function CreateTaskModal({
   closeModal: () => void
   handleOverlayClick: (e: React.MouseEvent) => void
 }) {
-  const { getTasksByDate, addTask, deleteTask } = useTasksStore()
-  const tasks = getTasksByDate(date)
+  const { addTask, deleteTask, tasks } = useTasksStore()
+  const currentTasks = tasks[JSON.stringify(date)] || []
 
   const onFormSubmit = (
     data: CreateTaskForm,
@@ -28,7 +28,7 @@ export function CreateTaskModal({
   ) => {
     addTask(date, {
       name: data.taskName,
-      important: data.taskImportant,
+      importance: data.taskImportant,
       description: data.taskDescription || undefined,
     })
     reset()
@@ -60,9 +60,9 @@ export function CreateTaskModal({
         }
         form={<CreateTaskForm onSubmit={onFormSubmit} />}
         tasks={
-          tasks?.length > 0 ? (
+          currentTasks.length > 0 ? (
             <ul className="grid gap-2 overflow-y-auto py-2">
-              {tasks.map((task) => (
+              {currentTasks.map((task) => (
                 <Task
                   key={task.id}
                   task={task}
