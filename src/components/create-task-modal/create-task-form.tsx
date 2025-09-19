@@ -9,13 +9,14 @@ import {
 } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
 import { Controller, useForm, type UseFormReset } from 'react-hook-form'
-import type { TaskImportant } from '@/types/task.types'
+import type { TaskImportance } from '@/types/task.types'
 import { Error } from '@/components/ui/error'
+import { TASKS_IMPORTANTS } from '@/data/task.data.ts'
 
 export type CreateTaskForm = {
   taskName: string
   taskDescription?: string
-  taskImportant: TaskImportant
+  taskImportant: TaskImportance
 }
 
 export function CreateTaskForm({
@@ -33,7 +34,7 @@ export function CreateTaskForm({
     defaultValues: {
       taskName: '',
       taskDescription: '',
-      taskImportant: '' as TaskImportant,
+      taskImportant: '' as TaskImportance,
     },
   })
 
@@ -80,18 +81,19 @@ export function CreateTaskForm({
                 <SelectValue placeholder="Важность задачи" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem className="flex items-center gap-1" value="Высокая">
-                  <span className="w-2 h-2 bg-red-900 rounded-full"></span>
-                  Высокая
-                </SelectItem>
-                <SelectItem value="Средняя">
-                  <span className="w-2 h-2 bg-orange-400 rounded-full"></span>
-                  Средняя
-                </SelectItem>
-                <SelectItem value="Низкая">
-                  <span className="w-2 h-2 bg-green-900 rounded-full"></span>
-                  Низкая
-                </SelectItem>
+                {TASKS_IMPORTANTS.map((importance) => (
+                  <SelectItem
+                    className="flex items-center gap-1"
+                    value={importance.label}
+                    key={importance.label}
+                  >
+                    <span
+                      className="w-2 h-2 rounded-full"
+                      style={{ backgroundColor: importance.color }}
+                    ></span>
+                    {importance.label}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           )}
