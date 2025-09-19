@@ -29,7 +29,7 @@ function Day({
       >
         {date.getDate()}
       </time>
-      {tasksCount && tasksCount > 0 && (
+      {!!tasksCount && tasksCount > 0 && (
         <span className="absolute md:bottom-3 md:right-3 bottom-1 right-0.5 rounded-full bg-accent-foreground text-background md:w-8 md:h-8 w-5 h-5 text-[14px] md:text-[16px] leading-none flex items-center justify-center">
           {tasksCount}
         </span>
