@@ -7,6 +7,7 @@ import {
   DrawerTrigger,
 } from '@/components/ui/drawer'
 import type { ReactNode } from 'react'
+import { TASKS_IMPORTANTS } from '@/data/task.data.ts'
 
 export function Layout({
   closeButton,
@@ -29,13 +30,24 @@ export function Layout({
           Открыть список задач
         </DrawerTrigger>
         <DrawerContent className="p-3">
-          <DrawerHeader className="p-0 pb-2">
+          <DrawerHeader className="p-0 pb-2 gap-3 md:gap-4">
             <DrawerTitle className="text-xl text-center">
               Список задач
             </DrawerTitle>
             <DrawerDescription className="sr-only">
-              Список всех задач на выбранный день
+              Список задач на выбранный день
             </DrawerDescription>
+            <ul className="flex items-center justify-between gap-2 flex-wrap">
+              {TASKS_IMPORTANTS.map((importance) => (
+                <li key={importance.label} className="flex items-center gap-1">
+                  <span
+                    className="w-3 h-3 rounded-full"
+                    style={{ backgroundColor: importance.color }}
+                  ></span>
+                  {importance.label} важность
+                </li>
+              ))}
+            </ul>
           </DrawerHeader>
           {tasks}
         </DrawerContent>
