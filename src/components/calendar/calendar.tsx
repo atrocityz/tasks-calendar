@@ -1,18 +1,19 @@
 import { Layout } from '@/components/calendar/ui/layout'
 import { NextButton } from '@/components/calendar/ui/next-button'
 import { PrevButton } from '@/components/calendar/ui/prev-button'
-import { useCalendar } from '@/components/calendar/use-calendar'
 import { MemoizedDay } from '@/components/calendar/ui/day'
 import { format, isSameMonth } from 'date-fns'
 import { ru } from 'date-fns/locale'
-import { useTasksStore } from '@/stores/use-tasks-store'
+import { useTasksStore } from '@/stores/use-tasks.store.ts'
 import { CreateTaskModal } from '@/components/create-task-modal/create-task-modal'
 import { useModal } from '@/components/calendar/use-modal'
+import { useCalendarModel } from '@/components/calendar/use-calendar-model.ts'
 
 export function Calendar() {
-  const calendarModel = useCalendar()
-  const { getTasksByDate } = useTasksStore()
+  const { tasks } = useTasksStore()
+
   const { isModalOpen, openModal, closeModal, handleOverlayClick } = useModal()
+  const calendarModel = useCalendarModel()
 
   const formattedDate = format(calendarModel.currentDate, 'LLLL, yyyy', {
     locale: ru,
@@ -23,9 +24,9 @@ export function Calendar() {
       <Layout
         header={
           <>
-            <PrevButton onClick={calendarModel.handlePrevButtonClick} />
+            <PrevButton onClick={calendarModel.onPrevButtonClick} />
             <h2 className="text-xl capitalize">{formattedDate}</h2>
-            <NextButton onClick={calendarModel.handleNextButtonClick} />
+            <NextButton onClick={calendarModel.onNextButtonClick} />
           </>
         }
         weekdays={calendarModel.weekdays.map((weekday) => (
@@ -40,15 +41,15 @@ export function Calendar() {
           <MemoizedDay
             onClick={() => {
               openModal()
-              calendarModel.setSelectedDate(calendarDate)
+              calendarModel.selectDate(calendarDate)
             }}
             date={calendarDate}
-            tasks={getTasksByDate(calendarDate)}
+            tasksCount={tasks[JSON.stringify(calendarDate)]?.length}
             isCurrentMonth={isSameMonth(
               calendarDate,
               calendarModel.currentDate,
             )}
-            key={`${calendarDate.getFullYear()}-${calendarDate.getMonth()}-${calendarDate.getDate()}`}
+            key={JSON.stringify(calendarDate)}
           />
         ))}
       />
