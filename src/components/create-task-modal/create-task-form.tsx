@@ -54,7 +54,9 @@ export function CreateTaskForm({
               <Input
                 id="task-name"
                 onChange={field.onChange}
+                className="placeholder:opacity-50"
                 value={field.value}
+                placeholder="Помыть посуду"
                 aria-invalid={errors.taskName ? 'true' : 'false'}
               />
             )}
@@ -64,7 +66,12 @@ export function CreateTaskForm({
       </div>
       <div className="grid gap-2">
         <Label htmlFor="task-description">Описание задачи</Label>
-        <Input id="task-description" {...register('taskDescription')} />
+        <Input
+          id="task-description"
+          placeholder="Тщательно помыть всю посуду"
+          className="placeholder:opacity-50"
+          {...register('taskDescription')}
+        />
       </div>
       <div className="grid gap-1">
         <Controller
@@ -77,7 +84,7 @@ export function CreateTaskForm({
               value={field.value}
               aria-invalid={errors.taskImportant ? 'true' : 'false'}
             >
-              <SelectTrigger className="w-[160px]">
+              <SelectTrigger className="w-[180px]">
                 <SelectValue placeholder="Важность задачи" />
               </SelectTrigger>
               <SelectContent>

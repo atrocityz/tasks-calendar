@@ -3,33 +3,36 @@ import { X } from 'lucide-react'
 import { Button } from '@/components/ui/button.tsx'
 import { format } from 'date-fns'
 import { ru } from 'date-fns/locale'
-import { useTasksStore } from '@/stores/use-tasks.store.ts'
 import { Layout } from '@/components/create-task-modal/ui/layout'
 import { CreateTaskForm } from '@/components/create-task-modal/create-task-form'
-import { Task } from '@/components/create-task-modal/ui/task'
+import { TaskCard } from '@/components/ui/task-card.tsx'
 import type { UseFormReset } from 'react-hook-form'
 import { toast } from 'sonner'
+import { getTasksByDate, useTasksStore } from '@/stores/tasks.store.ts'
 
 export function CreateTaskModal({
   date,
   closeModal,
   handleOverlayClick,
 }: {
-  date: Date
+  date?: Date
   closeModal: () => void
   handleOverlayClick: (e: React.MouseEvent) => void
 }) {
   const { addTask, deleteTask, tasks } = useTasksStore()
-  const currentTasks = tasks[JSON.stringify(date)] || []
+  const currentTasks = date
+    ? getTasksByDate(JSON.stringify(date), tasks)
+    : tasks
 
   const onFormSubmit = (
     data: CreateTaskForm,
     reset: UseFormReset<CreateTaskForm>,
   ) => {
-    addTask(date, {
+    addTask({
       name: data.taskName,
       importance: data.taskImportant,
       description: data.taskDescription || undefined,
+      date: JSON.stringify(date),
     })
     reset()
 
@@ -55,7 +58,9 @@ export function CreateTaskModal({
         }
         header={
           <p className="self-center text-2xl">
-            {format(date, 'd MMMM yyyy', { locale: ru })}
+            {date
+              ? format(date, 'd MMMM yyyy', { locale: ru })
+              : 'Создание задачи'}
           </p>
         }
         form={<CreateTaskForm onSubmit={onFormSubmit} />}
@@ -63,11 +68,11 @@ export function CreateTaskModal({
           currentTasks.length > 0 ? (
             <ul className="grid gap-2 overflow-y-auto py-2">
               {currentTasks.map((task) => (
-                <Task
+                <TaskCard
                   key={task.id}
-                  task={task}
+                  item={task}
                   onDelete={() => {
-                    deleteTask(date, task.id)
+                    deleteTask(task.id)
                     toast('Задача успешно удалена!')
                   }}
                 />

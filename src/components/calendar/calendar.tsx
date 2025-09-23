@@ -4,10 +4,10 @@ import { PrevButton } from '@/components/calendar/ui/prev-button'
 import { MemoizedDay } from '@/components/calendar/ui/day'
 import { format, isSameMonth } from 'date-fns'
 import { ru } from 'date-fns/locale'
-import { useTasksStore } from '@/stores/use-tasks.store.ts'
 import { CreateTaskModal } from '@/components/create-task-modal/create-task-modal'
 import { useModal } from '@/components/calendar/use-modal'
 import { useCalendarModel } from '@/components/calendar/use-calendar-model.ts'
+import { getTasksByDate, useTasksStore } from '@/stores/tasks.store.ts'
 
 export function Calendar() {
   const { tasks } = useTasksStore()
@@ -44,7 +44,9 @@ export function Calendar() {
               calendarModel.selectDate(calendarDate)
             }}
             date={calendarDate}
-            tasksCount={tasks[JSON.stringify(calendarDate)]?.length}
+            tasksCount={
+              getTasksByDate(JSON.stringify(calendarDate), tasks).length
+            }
             isCurrentMonth={isSameMonth(
               calendarDate,
               calendarModel.currentDate,
