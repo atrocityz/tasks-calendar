@@ -5,10 +5,10 @@ import { format } from 'date-fns'
 import { ru } from 'date-fns/locale'
 import { Layout } from '@/components/create-task-modal/ui/layout'
 import { CreateTaskForm } from '@/components/create-task-modal/create-task-form'
-import { TaskCard } from '@/components/ui/task-card.tsx'
 import type { UseFormReset } from 'react-hook-form'
 import { toast } from 'sonner'
 import { getTasksByDate, useTasksStore } from '@/stores/tasks.store.ts'
+import { TaskList } from '@/components/task-list.tsx'
 
 export function CreateTaskModal({
   date,
@@ -65,24 +65,10 @@ export function CreateTaskModal({
         }
         form={<CreateTaskForm onSubmit={onFormSubmit} />}
         tasks={
-          currentTasks.length > 0 ? (
-            <ul className="grid gap-2 overflow-y-auto py-2">
-              {currentTasks.map((task) => (
-                <TaskCard
-                  key={task.id}
-                  item={task}
-                  onDelete={() => {
-                    deleteTask(task.id)
-                    toast('Задача успешно удалена!')
-                  }}
-                />
-              ))}
-            </ul>
-          ) : (
-            <span className="text-muted-foreground/70">
-              Список задач пуст...
-            </span>
-          )
+          <TaskList
+            tasks={currentTasks}
+            deleteTask={(taskId: string) => deleteTask(taskId)}
+          />
         }
       />
     </div>,

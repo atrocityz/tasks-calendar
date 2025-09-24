@@ -7,7 +7,7 @@ import {
   DrawerTrigger,
 } from '@/components/ui/drawer'
 import type { ReactNode } from 'react'
-import { TaskTags } from '@/components/ui/task-tags.tsx'
+import { TaskTags } from '@/components/task-tags.tsx'
 
 export function Layout({
   closeButton,
@@ -30,7 +30,7 @@ export function Layout({
           Открыть список задач
         </DrawerTrigger>
         <DrawerContent className="p-3">
-          <DrawerHeader className="p-0 pb-2 gap-3 md:gap-4">
+          <DrawerHeader className="p-0 pb-2 gap-3 md:gap-4 mb-2">
             <DrawerTitle className="text-xl text-center">
               Список задач
             </DrawerTitle>

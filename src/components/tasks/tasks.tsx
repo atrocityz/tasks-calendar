@@ -1,14 +1,13 @@
-import { TaskCard } from '@/components/ui/task-card.tsx'
 import { useTasksStore } from '@/stores/tasks.store.ts'
-import { toast } from 'sonner'
 import { Layout } from '@/components/tasks/ui/layout.tsx'
 import { useMemo, useState } from 'react'
 import { SearchField } from '@/components/tasks/ui/search-field.tsx'
-import { TaskTags } from '@/components/ui/task-tags.tsx'
+import { TaskTags } from '@/components/task-tags.tsx'
 import { useModal } from '@/components/calendar/use-modal.ts'
 import { CreateTaskModal } from '@/components/create-task-modal/create-task-modal.tsx'
 import { Button } from '@/components/ui/button.tsx'
 import { Plus } from 'lucide-react'
+import { TaskList } from '@/components/task-list.tsx'
 
 export function Tasks() {
   const { tasks, deleteTask } = useTasksStore()
@@ -40,22 +39,10 @@ export function Tasks() {
           </Button>
         }
         taskList={
-          filteredTasks.length > 0 ? (
-            <ul className="grid gap-2">
-              {filteredTasks.map((task) => (
-                <TaskCard
-                  key={task.id}
-                  item={task}
-                  onDelete={() => {
-                    deleteTask(task.id)
-                    toast('Задача успешно удалена!')
-                  }}
-                />
-              ))}
-            </ul>
-          ) : (
-            <div className="text-muted-foreground/70">Список задач пуст...</div>
-          )
+          <TaskList
+            tasks={filteredTasks}
+            deleteTask={(taskId: string) => deleteTask(taskId)}
+          />
         }
       />
       {isModalOpen && (
