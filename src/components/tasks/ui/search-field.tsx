@@ -16,7 +16,8 @@ export function SearchField({
       <Input
         id="task-search"
         value={value}
-        placeholder="Название задачи"
+        type="search"
+        placeholder="Поиск по названию задачи"
         className="placeholder:opacity-50 h-10"
         onChange={(e) => onChange(e.target.value)}
       />
