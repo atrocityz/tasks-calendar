@@ -3,15 +3,15 @@ import { Layout } from '@/components/tasks/ui/layout.tsx'
 import { useMemo, useState } from 'react'
 import { SearchField } from '@/components/tasks/ui/search-field.tsx'
 import { TaskTags } from '@/components/task-tags.tsx'
-import { useModal } from '@/components/calendar/use-modal.ts'
 import { CreateTaskModal } from '@/components/create-task-modal/create-task-modal.tsx'
 import { Button } from '@/components/ui/button.tsx'
 import { Plus } from 'lucide-react'
 import { TaskList } from '@/components/task-list.tsx'
+import { useModalStore } from '@/stores/modal.store.ts'
 
 export function Tasks() {
   const { tasks, deleteTask } = useTasksStore()
-  const { isModalOpen, openModal, closeModal } = useModal()
+  const { openModal } = useModalStore()
   const [searchValue, setSearchValue] = useState('')
 
   const filteredTasks = useMemo(() => {
@@ -45,13 +45,7 @@ export function Tasks() {
           />
         }
       />
-      {isModalOpen && (
-        <CreateTaskModal
-          isOpen={isModalOpen}
-          closeModal={closeModal}
-          showTaskList={false}
-        />
-      )}
+      <CreateTaskModal showTaskList={false} />
     </>
   )
 }

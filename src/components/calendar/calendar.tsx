@@ -5,14 +5,13 @@ import { MemoizedDay } from '@/components/calendar/ui/day'
 import { format, isSameMonth } from 'date-fns'
 import { ru } from 'date-fns/locale'
 import { CreateTaskModal } from '@/components/create-task-modal/create-task-modal'
-import { useModal } from '@/components/calendar/use-modal'
 import { useCalendarModel } from '@/components/calendar/use-calendar-model.ts'
 import { getTasksByDate, useTasksStore } from '@/stores/tasks.store.ts'
+import { useModalStore } from '@/stores/modal.store.ts'
 
 export function Calendar() {
   const { tasks } = useTasksStore()
-
-  const { isModalOpen, openModal, closeModal } = useModal()
+  const { openModal } = useModalStore()
   const calendarModel = useCalendarModel()
 
   const formattedDate = format(calendarModel.currentDate, 'LLLL, yyyy', {
@@ -55,13 +54,7 @@ export function Calendar() {
           />
         ))}
       />
-      {isModalOpen && (
-        <CreateTaskModal
-          isOpen={isModalOpen}
-          date={calendarModel.selectedDate}
-          closeModal={closeModal}
-        />
-      )}
+      <CreateTaskModal date={calendarModel.selectedDate} />
     </>
   )
 }
