@@ -127,7 +127,3 @@ button:not(:disabled) {
 html {
   scrollbar-color: var(--muted-foreground) var(--muted);
 }
-
-html.is-lock {
-  overflow: hidden;
-}

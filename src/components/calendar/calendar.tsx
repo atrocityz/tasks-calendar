@@ -12,7 +12,7 @@ import { getTasksByDate, useTasksStore } from '@/stores/tasks.store.ts'
 export function Calendar() {
   const { tasks } = useTasksStore()
 
-  const { isModalOpen, openModal, closeModal, handleOverlayClick } = useModal()
+  const { isModalOpen, openModal, closeModal } = useModal()
   const calendarModel = useCalendarModel()
 
   const formattedDate = format(calendarModel.currentDate, 'LLLL, yyyy', {
@@ -57,9 +57,9 @@ export function Calendar() {
       />
       {isModalOpen && (
         <CreateTaskModal
+          isOpen={isModalOpen}
           date={calendarModel.selectedDate}
           closeModal={closeModal}
-          handleOverlayClick={handleOverlayClick}
         />
       )}
     </>

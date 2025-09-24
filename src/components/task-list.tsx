@@ -14,7 +14,7 @@ export function TaskList({
   }
 
   return (
-    <ul className="grid gap-2">
+    <ul className="grid gap-2 overflow-y-auto">
       {tasks.map((task) => (
         <TaskCard
           key={task.id}

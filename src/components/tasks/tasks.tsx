@@ -11,7 +11,7 @@ import { TaskList } from '@/components/task-list.tsx'
 
 export function Tasks() {
   const { tasks, deleteTask } = useTasksStore()
-  const { isModalOpen, openModal, closeModal, handleOverlayClick } = useModal()
+  const { isModalOpen, openModal, closeModal } = useModal()
   const [searchValue, setSearchValue] = useState('')
 
   const filteredTasks = useMemo(() => {
@@ -47,8 +47,9 @@ export function Tasks() {
       />
       {isModalOpen && (
         <CreateTaskModal
+          isOpen={isModalOpen}
           closeModal={closeModal}
-          handleOverlayClick={handleOverlayClick}
+          showTaskList={false}
         />
       )}
     </>
