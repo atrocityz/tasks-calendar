@@ -1,23 +1,20 @@
 import type { ReactNode } from 'react'
 
 export function Layout({
-  taskList,
-  tags,
-  searchField,
-  addTaskButton,
+  actions,
+  header,
+  children,
 }: {
-  tags: ReactNode
-  searchField: ReactNode
-  addTaskButton: ReactNode
-  taskList: ReactNode
+  header: ReactNode
+  actions: ReactNode
+  children: ReactNode
 }) {
   return (
     <div className="max-w-[860px] px-2 mx-auto my-10 grid gap-5">
-      {searchField}
-      {tags}
+      {header}
       <div className="flex flex-col">
-        <div className="self-center mb-3">{addTaskButton}</div>
-        {taskList}
+        <div className="self-center mb-3">{actions}</div>
+        {children}
       </div>
     </div>
   )

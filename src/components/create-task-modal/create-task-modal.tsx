@@ -75,12 +75,13 @@ export function CreateTaskModal({
         <Layout
           form={<CreateTaskForm onSubmit={onFormSubmit} />}
           tasks={
-            <TaskList
-              tasks={currentTasks}
-              deleteTask={(taskId: string) => deleteTask(taskId)}
-            />
+            showTaskList ? (
+              <TaskList
+                tasks={currentTasks}
+                deleteTask={(taskId: string) => deleteTask(taskId)}
+              />
+            ) : undefined
           }
-          showTaskList={showTaskList}
         />
       </DialogContent>
     </Dialog>

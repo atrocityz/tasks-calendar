@@ -23,11 +23,13 @@ export function Tasks() {
   return (
     <>
       <Layout
-        tags={<TaskTags />}
-        searchField={
-          <SearchField value={searchValue} onChange={setSearchValue} />
+        header={
+          <>
+            <SearchField value={searchValue} onChange={setSearchValue} />
+            <TaskTags />
+          </>
         }
-        addTaskButton={
+        actions={
           <Button
             variant="outline"
             onClick={openModal}
@@ -38,13 +40,12 @@ export function Tasks() {
             <Plus />
           </Button>
         }
-        taskList={
-          <TaskList
-            tasks={filteredTasks}
-            deleteTask={(taskId: string) => deleteTask(taskId)}
-          />
-        }
-      />
+      >
+        <TaskList
+          tasks={filteredTasks}
+          deleteTask={(taskId: string) => deleteTask(taskId)}
+        />
+      </Layout>
       <CreateTaskModal showTaskList={false} />
     </>
   )

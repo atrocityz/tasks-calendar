@@ -12,16 +12,14 @@ import { TaskTags } from '@/components/task-tags.tsx'
 export function Layout({
   tasks,
   form,
-  showTaskList,
 }: {
   form: ReactNode
-  tasks: ReactNode
-  showTaskList: boolean
+  tasks?: ReactNode
 }) {
   return (
     <div className="flex flex-col gap-6">
       {form}
-      {showTaskList && (
+      {tasks && (
         <Drawer direction="right">
           <DrawerTrigger className="self-center opacity-70 underline hover:opacity-100 transition-opacity">
             Открыть список задач
