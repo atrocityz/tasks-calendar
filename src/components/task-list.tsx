@@ -1,4 +1,4 @@
-import { TaskCard } from '@/components/task-card.tsx'
+import { TaskCard } from '@/components/task-card/task-card.tsx'
 import { toast } from 'sonner'
 import type { Task } from '@/types/task.types.ts'
 

@@ -6,6 +6,7 @@ interface TaskStore {
   tasks: Task[]
   addTask: (task: Omit<Task, 'id'>) => void
   deleteTask: (taskId: string) => void
+  editTask: (taskId: string, data: Partial<Task>) => void
 }
 
 export const getTasksByDate = (date: string, tasks: Task[]) => {
@@ -29,6 +30,19 @@ export const useTasksStore = create<TaskStore>()(
       deleteTask: (taskId) =>
         set((state) => ({
           tasks: state.tasks.filter((task) => task.id !== taskId),
+        })),
+      editTask: (taskId, data) =>
+        set((state) => ({
+          tasks: state.tasks.map((task) => {
+            if (task.id === taskId) {
+              return {
+                ...task,
+                ...data,
+              }
+            }
+
+            return task
+          }),
         })),
     }),
     {
