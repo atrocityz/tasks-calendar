@@ -19,11 +19,11 @@ export const useTasksStore = create<TaskStore>()(
       addTask: (task) =>
         set((state) => ({
           tasks: [
-            ...state.tasks,
             {
               id: crypto.randomUUID(),
               ...task,
             },
+            ...state.tasks,
           ],
         })),
       deleteTask: (taskId) =>
