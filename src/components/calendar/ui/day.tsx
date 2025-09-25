@@ -16,7 +16,7 @@ function Day({
   return (
     <button
       className={cn(
-        'relative py-5 md:py-10 text-xl border-sidebar-border hover:opacity-70 not-[:nth-last-child(-n+7)]:border-b not-[:nth-child(7n)]:border-r transition-opacity',
+        'relative py-6 md:py-13 text-xl border-sidebar-border hover:opacity-70 not-[:nth-last-child(-n+7)]:border-b not-[:nth-child(7n)]:border-r transition-opacity',
         {
           'bg-muted/30': !isCurrentMonth,
           'bg-primary text-background': isToday(date),
