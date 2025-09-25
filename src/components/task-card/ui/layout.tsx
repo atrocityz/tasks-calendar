@@ -3,21 +3,26 @@ import type { ReactNode } from 'react'
 export function Layout({
   borderColor,
   actions,
-  children,
+  header,
+  description,
 }: {
   borderColor?: string
-  children: ReactNode
+  header: ReactNode
+  description: ReactNode
   actions: ReactNode
 }) {
   return (
     <li
-      className="flex justify-between bg-transparent border border-sidebar-border p-2 md:p-4 rounded gap-4"
+      className="grid bg-transparent border border-sidebar-border p-2 md:p-4 rounded gap-2"
       style={{
         borderColor: borderColor,
       }}
     >
-      {children}
-      {actions}
+      <div className="flex justify-between items-start gap-2">
+        {header}
+        {actions}
+      </div>
+      {description}
     </li>
   )
 }

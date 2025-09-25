@@ -81,6 +81,7 @@ export function CreateTaskModal({
               <TaskList
                 tasks={currentTasks}
                 deleteTask={(taskId: string) => deleteTask(taskId)}
+                limitText
               />
             ) : undefined
           }
