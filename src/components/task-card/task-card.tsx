@@ -6,6 +6,7 @@ import { useModal } from '@/hooks/use-modal.ts'
 import { EditTaskModal } from '@/components/edit-task-modal/edit-task-modal.tsx'
 import { TaskCardActions } from '@/components/task-card/ui/actions.tsx'
 import { cn } from '@/lib/utils.ts'
+import { TaskCardHeader } from '@/components/task-card/ui/header.tsx'
 
 export function TaskCard({
   item,
@@ -24,29 +25,13 @@ export function TaskCard({
         borderColor={getTaskImportanceColor(item.importance)}
         actions={<TaskCardActions onDelete={onDelete} openModal={openModal} />}
         header={
-          <>
-            <span className="sr-only">{item.importance} важность задачи</span>
-            <div className="grid gap-2">
-              <div>
-                <h2
-                  className={cn('text-[16px] md:text-[18px] md:text-wrap', {
-                    'truncate max-w-[135px] sm:max-w-[245px] md:max-w-full':
-                      limitText,
-                  })}
-                  title={item.name}
-                >
-                  {item.name}
-                </h2>
-                {item.date && (
-                  <span className="text-muted-foreground text-[14px]">
-                    {format(JSON.parse(item.date), 'd MMMM yyyy', {
-                      locale: ru,
-                    })}
-                  </span>
-                )}
-              </div>
-            </div>
-          </>
+          <TaskCardHeader
+            item={item}
+            date={format(JSON.parse(item.date), 'd MMMM yyyy', {
+              locale: ru,
+            })}
+            limitText={limitText}
+          />
         }
         description={
           item.description && (

@@ -7,7 +7,7 @@ export interface Task {
   name: string
   description?: string
   importance: TaskImportance
-  date?: string
+  date: string
 }
 
 export const getTaskImportanceColor = (importance: TaskImportance) => {
