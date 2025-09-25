@@ -3,6 +3,8 @@ _Vite + React + TS + TailwindCSS + ShadcnUI_
 
 Простенькое полностью клиентское приложение для контроля задач с календарем.
 
+![preview.png](preview.png)
+
 ## Использование:
 ```bash
 git clone https://github.com/atrocityz/tasks-calendar
