@@ -16,17 +16,19 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog.tsx'
-import { useModalStore } from '@/stores/modal.store.ts'
 
 export function CreateTaskModal({
   date,
+  isOpen,
+  closeModal,
   showTaskList = true,
 }: {
   date?: Date
+  isOpen: boolean
+  closeModal: () => void
   showTaskList?: boolean
 }) {
   const { addTask, deleteTask, tasks } = useTasksStore()
-  const { closeModal, isOpen } = useModalStore()
   const currentTasks = date
     ? getTasksByDate(JSON.stringify(date), tasks)
     : tasks

@@ -7,11 +7,11 @@ import { ru } from 'date-fns/locale'
 import { CreateTaskModal } from '@/components/create-task-modal/create-task-modal'
 import { useCalendarModel } from '@/components/calendar/use-calendar-model.ts'
 import { getTasksByDate, useTasksStore } from '@/stores/tasks.store.ts'
-import { useModalStore } from '@/stores/modal.store.ts'
+import { useModal } from '@/hooks/use-modal.ts'
 
 export function Calendar() {
   const { tasks } = useTasksStore()
-  const { openModal } = useModalStore()
+  const { closeModal, isOpen, openModal } = useModal()
   const calendarModel = useCalendarModel()
 
   const formattedDate = format(calendarModel.currentDate, 'LLLL, yyyy', {
@@ -54,7 +54,13 @@ export function Calendar() {
           />
         ))}
       />
-      <CreateTaskModal date={calendarModel.selectedDate} />
+      {isOpen && (
+        <CreateTaskModal
+          date={calendarModel.selectedDate}
+          closeModal={closeModal}
+          isOpen={isOpen}
+        />
+      )}
     </>
   )
 }

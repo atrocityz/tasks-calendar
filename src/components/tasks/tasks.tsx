@@ -7,11 +7,11 @@ import { CreateTaskModal } from '@/components/create-task-modal/create-task-moda
 import { Button } from '@/components/ui/button.tsx'
 import { Plus } from 'lucide-react'
 import { TaskList } from '@/components/task-list.tsx'
-import { useModalStore } from '@/stores/modal.store.ts'
+import { useModal } from '@/hooks/use-modal.ts'
 
 export function Tasks() {
   const { tasks, deleteTask } = useTasksStore()
-  const { openModal } = useModalStore()
+  const { isOpen, openModal, closeModal } = useModal()
   const [searchValue, setSearchValue] = useState('')
 
   const filteredTasks = useMemo(() => {
@@ -46,7 +46,13 @@ export function Tasks() {
           deleteTask={(taskId: string) => deleteTask(taskId)}
         />
       </Layout>
-      <CreateTaskModal showTaskList={false} />
+      {isOpen && (
+        <CreateTaskModal
+          showTaskList={false}
+          closeModal={closeModal}
+          isOpen={isOpen}
+        />
+      )}
     </>
   )
 }

@@ -108,7 +108,7 @@ export function CreateTaskForm({
         {errors.taskImportant && <Error>{errors.taskImportant.message}</Error>}
       </div>
       <Button type="submit" className="self-center mt-auto" variant="outline">
-        Создать задачу
+        Создать
       </Button>
     </form>
   )
