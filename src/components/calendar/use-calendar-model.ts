@@ -30,8 +30,8 @@ export function useCalendarModel() {
     currentDate,
     selectedDate,
     selectDate,
-    onPrevButtonClick,
-    onNextButtonClick,
+    goToPrevMonth,
+    goToNextMonth,
   } = useCalendarStore()
 
   const calendarDays = getCalendarDays(currentDate)
@@ -52,7 +52,7 @@ export function useCalendarModel() {
     currentDate,
     selectedDate,
     selectDate,
-    onPrevButtonClick,
-    onNextButtonClick,
+    goToPrevMonth,
+    goToNextMonth,
   }
 }

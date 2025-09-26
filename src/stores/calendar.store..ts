@@ -5,15 +5,15 @@ interface CalendarStore {
   currentDate: Date
   selectedDate: Date
   selectDate: (date: Date) => void
-  onPrevButtonClick: () => void
-  onNextButtonClick: () => void
+  goToPrevMonth: () => void
+  goToNextMonth: () => void
 }
 
 export const useCalendarStore = create<CalendarStore>((set) => ({
   currentDate: new Date(),
   selectedDate: new Date(),
   selectDate: (date) => set({ selectedDate: date }),
-  onPrevButtonClick: () =>
+  goToPrevMonth: () =>
     set((state) => {
       if (getMonth(state.currentDate) === 0) {
         return {
@@ -30,7 +30,7 @@ export const useCalendarStore = create<CalendarStore>((set) => ({
         ),
       }
     }),
-  onNextButtonClick: () =>
+  goToNextMonth: () =>
     set((state) => {
       if (getMonth(state.currentDate) === 11) {
         return {

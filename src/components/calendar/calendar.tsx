@@ -23,9 +23,9 @@ export function Calendar() {
       <Layout
         header={
           <>
-            <PrevButton onClick={calendarModel.onPrevButtonClick} />
+            <PrevButton onClick={calendarModel.goToPrevMonth} />
             <h2 className="text-xl capitalize">{formattedDate}</h2>
-            <NextButton onClick={calendarModel.onNextButtonClick} />
+            <NextButton onClick={calendarModel.goToNextMonth} />
           </>
         }
         weekdays={calendarModel.weekdays.map((weekday) => (
