@@ -4,10 +4,10 @@ import { PrevButton } from '@/components/calendar/ui/prev-button'
 import { MemoizedDay } from '@/components/calendar/ui/day'
 import { format, isSameMonth } from 'date-fns'
 import { ru } from 'date-fns/locale'
-import { CreateTaskModal } from '@/components/create-task-modal/create-task-modal'
 import { useCalendarModel } from '@/components/calendar/use-calendar-model.ts'
 import { getTasksByDate, useTasksStore } from '@/stores/tasks.store.ts'
 import { useModal } from '@/hooks/use-modal.ts'
+import { CreateTaskModal } from '@/components/task-modals/create-task-modal.tsx'
 
 export function Calendar() {
   const { tasks } = useTasksStore()

@@ -3,11 +3,11 @@ import { Layout } from '@/components/tasks/ui/layout.tsx'
 import { useMemo, useState } from 'react'
 import { SearchField } from '@/components/tasks/ui/search-field.tsx'
 import { TaskTags } from '@/components/task-tags.tsx'
-import { CreateTaskModal } from '@/components/create-task-modal/create-task-modal.tsx'
 import { Button } from '@/components/ui/button.tsx'
 import { Plus } from 'lucide-react'
 import { TaskList } from '@/components/task-list.tsx'
 import { useModal } from '@/hooks/use-modal.ts'
+import { CreateTaskModal } from '@/components/task-modals/create-task-modal.tsx'
 
 export function Tasks() {
   const { tasks, deleteTask } = useTasksStore()
@@ -48,9 +48,9 @@ export function Tasks() {
       </Layout>
       {isOpen && (
         <CreateTaskModal
-          showTaskList={false}
           closeModal={closeModal}
           isOpen={isOpen}
+          showTaskList={false}
         />
       )}
     </>

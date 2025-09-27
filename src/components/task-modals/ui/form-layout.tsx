@@ -1,49 +1,38 @@
-import { Label } from '@/components/ui/label'
-import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label.tsx'
+import {
+  type Control,
+  Controller,
+  type FieldErrors,
+  type UseFormRegister,
+} from 'react-hook-form'
+import { Input } from '@/components/ui/input.tsx'
+import { Error } from '@/components/ui/error'
+import { TASKS_IMPORTANTS } from '@/data/task.data.ts'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select'
-import { Button } from '@/components/ui/button'
-import { Controller, useForm } from 'react-hook-form'
-import type { Task, TaskImportance } from '@/types/task.types'
-import { Error } from '@/components/ui/error'
-import { TASKS_IMPORTANTS } from '@/data/task.data.ts'
+} from '@/components/ui/select.tsx'
+import type { ReactNode } from 'react'
+import type { CreateTaskForm } from '@/components/task-modals/create-task-modal.tsx'
 
-export type EditTaskForm = {
-  taskName: string
-  taskDescription?: string
-  taskImportant: TaskImportance
-}
-
-export function EditTaskForm({
+export function FormLayout({
+  actions,
   onSubmit,
-  task,
+  errors,
+  control,
+  register,
 }: {
-  onSubmit: (data: EditTaskForm) => void
-  task: Task
+  onSubmit: () => void
+  actions: ReactNode
+  errors: FieldErrors<CreateTaskForm>
+  register: UseFormRegister<CreateTaskForm>
+  control: Control<CreateTaskForm>
 }) {
-  const {
-    register,
-    handleSubmit,
-    control,
-    formState: { errors },
-  } = useForm<EditTaskForm>({
-    defaultValues: {
-      taskName: task.name,
-      taskDescription: task.description || '',
-      taskImportant: task.importance,
-    },
-  })
-
   return (
-    <form
-      onSubmit={handleSubmit((data) => onSubmit(data))}
-      className="flex flex-col gap-6"
-    >
+    <form onSubmit={onSubmit} className="flex flex-col gap-6">
       <div className="grid gap-2">
         <Label htmlFor="task-name">Название задачи</Label>
         <div className="grid gap-1">
@@ -108,9 +97,7 @@ export function EditTaskForm({
         />
         {errors.taskImportant && <Error>{errors.taskImportant.message}</Error>}
       </div>
-      <Button type="submit" className="self-center mt-auto" variant="outline">
-        Изменить
-      </Button>
+      {actions}
     </form>
   )
 }
