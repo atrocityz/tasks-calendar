@@ -1,4 +1,4 @@
-import { useCalendarStore } from '@/stores/calendar.store..ts'
+import { calendarStore } from '@/stores/calendar.store..ts'
 import {
   eachDayOfInterval,
   endOfMonth,
@@ -28,14 +28,12 @@ const getCalendarDays = (date: Date) => {
 export function useCalendarModel() {
   const {
     currentDate,
-    selectedDate,
     selectDate,
+    selectedDate,
     goToPrevMonth,
     goToNextMonth,
-  } = useCalendarStore()
-
+  } = calendarStore
   const calendarDays = getCalendarDays(currentDate)
-
   const weekdays = useMemo(
     () =>
       [...Array(7)].map((_, i) =>

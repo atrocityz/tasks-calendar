@@ -5,12 +5,12 @@ import { MemoizedDay } from '@/components/calendar/ui/day'
 import { format, isSameMonth } from 'date-fns'
 import { ru } from 'date-fns/locale'
 import { useCalendarModel } from '@/components/calendar/use-calendar-model.ts'
-import { getTasksByDate, useTasksStore } from '@/stores/tasks.store.ts'
+import { getTasksByDate, tasksStore } from '@/stores/tasks.store.ts'
 import { useModal } from '@/hooks/use-modal.ts'
 import { CreateTaskModal } from '@/components/task-modals/create-task-modal.tsx'
+import { observer } from 'mobx-react-lite'
 
-export function Calendar() {
-  const { tasks } = useTasksStore()
+export const Calendar = observer(() => {
   const { closeModal, isOpen, openModal } = useModal()
   const calendarModel = useCalendarModel()
 
@@ -44,7 +44,8 @@ export function Calendar() {
             }}
             date={calendarDate}
             tasksCount={
-              getTasksByDate(JSON.stringify(calendarDate), tasks).length
+              getTasksByDate(JSON.stringify(calendarDate), tasksStore.tasks)
+                .length
             }
             isCurrentMonth={isSameMonth(
               calendarDate,
@@ -63,4 +64,4 @@ export function Calendar() {
       )}
     </>
   )
-}
+})

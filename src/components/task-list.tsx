@@ -1,14 +1,11 @@
 import { TaskCard } from '@/components/task-card/task-card.tsx'
-import { toast } from 'sonner'
 import type { Task } from '@/types/task.types.ts'
 
 export function TaskList({
   tasks,
-  deleteTask,
   limitText = false,
   isTaskEditable,
 }: {
-  deleteTask: (taskId: string) => void
   tasks: Task[]
   limitText?: boolean
   isTaskEditable?: boolean
@@ -25,10 +22,6 @@ export function TaskList({
           key={task.id}
           item={task}
           editable={isTaskEditable}
-          onDelete={() => {
-            deleteTask(task.id)
-            toast('Задача успешно удалена!')
-          }}
         />
       ))}
     </ul>

@@ -1,5 +1,4 @@
 import { toast } from 'sonner'
-import { useTasksStore } from '@/stores/tasks.store.ts'
 import type { Task, TaskImportance } from '@/types/task.types.ts'
 import { useForm } from 'react-hook-form'
 import { ru } from 'date-fns/locale'
@@ -7,6 +6,7 @@ import { format } from 'date-fns'
 import { ModalLayout } from '@/components/task-modals/ui/modal-layout.tsx'
 import { FormLayout } from '@/components/task-modals/ui/form-layout.tsx'
 import { SubmitButton } from './ui/submit-button'
+import { tasksStore } from '@/stores/tasks.store.ts'
 
 export type EditTaskForm = {
   taskName: string
@@ -23,10 +23,8 @@ export function EditTaskModal({
   closeModal: () => void
   isOpen: boolean
 }) {
-  const { editTask } = useTasksStore()
-
   const onFormSubmit = (data: EditTaskForm) => {
-    editTask(task.id, {
+    tasksStore.editTask(task.id, {
       name: data.taskName,
       importance: data.taskImportant,
       description: data.taskDescription || undefined,

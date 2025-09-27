@@ -1,50 +1,39 @@
-import { create } from 'zustand'
 import { getMonth, getYear } from 'date-fns'
+import { makeAutoObservable } from 'mobx'
 
-interface CalendarStore {
-  currentDate: Date
-  selectedDate: Date
-  selectDate: (date: Date) => void
-  goToPrevMonth: () => void
-  goToNextMonth: () => void
+class CalendarStore {
+  currentDate = new Date()
+  selectedDate = new Date()
+
+  constructor() {
+    makeAutoObservable(this)
+  }
+
+  selectDate = (date: Date) => {
+    this.selectedDate = date
+  }
+
+  goToPrevMonth = () => {
+    if (getMonth(this.currentDate) === 0) {
+      this.currentDate = new Date(getYear(this.currentDate) - 1, 11)
+    }
+
+    this.currentDate = new Date(
+      getYear(this.currentDate),
+      getMonth(this.currentDate) - 1,
+    )
+  }
+
+  goToNextMonth = () => {
+    if (getMonth(this.currentDate) === 11) {
+      this.currentDate = new Date(getYear(this.currentDate) + 1, 0)
+    }
+
+    this.currentDate = new Date(
+      getYear(this.currentDate),
+      getMonth(this.currentDate) + 1,
+    )
+  }
 }
 
-export const useCalendarStore = create<CalendarStore>((set) => ({
-  currentDate: new Date(),
-  selectedDate: new Date(),
-  selectDate: (date) => set({ selectedDate: date }),
-  goToPrevMonth: () =>
-    set((state) => {
-      if (getMonth(state.currentDate) === 0) {
-        return {
-          ...state,
-          currentDate: new Date(getYear(state.currentDate) - 1, 11),
-        }
-      }
-
-      return {
-        ...state,
-        currentDate: new Date(
-          getYear(state.currentDate),
-          getMonth(state.currentDate) - 1,
-        ),
-      }
-    }),
-  goToNextMonth: () =>
-    set((state) => {
-      if (getMonth(state.currentDate) === 11) {
-        return {
-          ...state,
-          currentDate: new Date(getYear(state.currentDate) + 1, 0),
-        }
-      }
-
-      return {
-        ...state,
-        currentDate: new Date(
-          getYear(state.currentDate),
-          getMonth(state.currentDate) + 1,
-        ),
-      }
-    }),
-}))
+export const calendarStore = new CalendarStore()

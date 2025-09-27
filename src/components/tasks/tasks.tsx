@@ -1,24 +1,22 @@
-import { useTasksStore } from '@/stores/tasks.store.ts'
+import { tasksStore } from '@/stores/tasks.store.ts'
 import { Layout } from '@/components/tasks/ui/layout.tsx'
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { SearchField } from '@/components/tasks/ui/search-field.tsx'
 import { TaskTags } from '@/components/task-tags.tsx'
-import { Button } from '@/components/ui/button.tsx'
-import { Plus } from 'lucide-react'
 import { TaskList } from '@/components/task-list.tsx'
 import { useModal } from '@/hooks/use-modal.ts'
 import { CreateTaskModal } from '@/components/task-modals/create-task-modal.tsx'
+import { observer } from 'mobx-react-lite'
+import { Button } from '@/components/ui/button.tsx'
+import { Plus } from 'lucide-react'
 
-export function Tasks() {
-  const { tasks, deleteTask } = useTasksStore()
+export const Tasks = observer(() => {
   const { isOpen, openModal, closeModal } = useModal()
   const [searchValue, setSearchValue] = useState('')
 
-  const filteredTasks = useMemo(() => {
-    return tasks.filter((task) =>
-      task.name.toLowerCase().includes(searchValue.toLowerCase()),
-    )
-  }, [searchValue, tasks])
+  const filteredTasks = tasksStore.tasks.filter((task) =>
+    task.name.toLowerCase().includes(searchValue.toLowerCase()),
+  )
 
   return (
     <>
@@ -41,10 +39,7 @@ export function Tasks() {
           </Button>
         }
       >
-        <TaskList
-          tasks={filteredTasks}
-          deleteTask={(taskId: string) => deleteTask(taskId)}
-        />
+        <TaskList tasks={filteredTasks} />
       </Layout>
       {isOpen && (
         <CreateTaskModal
@@ -55,4 +50,4 @@ export function Tasks() {
       )}
     </>
   )
-}
+})

@@ -7,15 +7,15 @@ import { TaskCardActions } from '@/components/task-card/ui/actions.tsx'
 import { cn } from '@/lib/utils.ts'
 import { TaskCardHeader } from '@/components/task-card/ui/header.tsx'
 import { EditTaskModal } from '@/components/task-modals/edit-task-modal.tsx'
+import { tasksStore } from '@/stores/tasks.store.ts'
+import { toast } from 'sonner'
 
 export function TaskCard({
   item,
-  onDelete,
   editable = true,
   limitText,
 }: {
   item: Task
-  onDelete: () => void
   editable?: boolean
   limitText: boolean
 }) {
@@ -27,7 +27,10 @@ export function TaskCard({
         borderColor={getTaskImportanceColor(item.importance)}
         actions={
           <TaskCardActions
-            onDelete={onDelete}
+            onDelete={() => {
+              tasksStore.deleteTask(item.id)
+              toast('Задача успешно удалена!')
+            }}
             openModal={openModal}
             editable={editable}
           />
