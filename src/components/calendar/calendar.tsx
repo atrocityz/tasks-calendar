@@ -30,7 +30,7 @@ export function Calendar() {
         }
         weekdays={calendarModel.weekdays.map((weekday) => (
           <span
-            className="not-[:nth-child(7)]:border-r not-last:border-sidebar-border py-4 font-bold border-b"
+            className="not-[:nth-child(7)]:border-r not-last:border-sidebar-border py-4 font-bold border-b bg-muted"
             key={weekday}
           >
             {weekday}
