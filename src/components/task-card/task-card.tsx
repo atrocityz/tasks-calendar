@@ -3,18 +3,20 @@ import { format } from 'date-fns'
 import { ru } from 'date-fns/locale'
 import { Layout } from './ui/layout.tsx'
 import { useModal } from '@/hooks/use-modal.ts'
-import { EditTaskModal } from '@/components/edit-task-modal/edit-task-modal.tsx'
 import { TaskCardActions } from '@/components/task-card/ui/actions.tsx'
 import { cn } from '@/lib/utils.ts'
 import { TaskCardHeader } from '@/components/task-card/ui/header.tsx'
+import { EditTaskModal } from '@/components/task-modals/edit-task-modal.tsx'
 
 export function TaskCard({
   item,
   onDelete,
+  editable = true,
   limitText,
 }: {
   item: Task
   onDelete: () => void
+  editable?: boolean
   limitText: boolean
 }) {
   const { isOpen, openModal, closeModal } = useModal()
@@ -23,7 +25,13 @@ export function TaskCard({
     <>
       <Layout
         borderColor={getTaskImportanceColor(item.importance)}
-        actions={<TaskCardActions onDelete={onDelete} openModal={openModal} />}
+        actions={
+          <TaskCardActions
+            onDelete={onDelete}
+            openModal={openModal}
+            editable={editable}
+          />
+        }
         header={
           <TaskCardHeader
             item={item}
@@ -46,7 +54,7 @@ export function TaskCard({
         }
       />
       {isOpen && (
-        <EditTaskModal task={item} isOpen={isOpen} closeModal={closeModal} />
+        <EditTaskModal task={item} closeModal={closeModal} isOpen={isOpen} />
       )}
     </>
   )
