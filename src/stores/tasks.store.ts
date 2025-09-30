@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import type { Task } from '@/types/task.types'
+import { LOCAL_STORAGE_KEYS } from '@/lib/contants'
 
 interface TaskStore {
   tasks: Task[]
@@ -46,7 +47,7 @@ export const useTasksStore = create<TaskStore>()(
         })),
     }),
     {
-      name: 'tasks',
+      name: LOCAL_STORAGE_KEYS.TASKS,
       partialize: (state) => ({
         tasks: state.tasks,
       }),
