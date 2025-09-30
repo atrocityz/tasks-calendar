@@ -1,3 +1,4 @@
+import { LOCAL_STORAGE_KEYS } from '@/lib/constants'
 import type { Task } from '@/types/task.types'
 import { makeAutoObservable } from 'mobx'
 import { makePersistable } from 'mobx-persist-store'
@@ -12,7 +13,7 @@ class TasksStore {
   constructor() {
     makeAutoObservable(this)
     makePersistable(this, {
-      name: 'TasksStore',
+      name: LOCAL_STORAGE_KEYS.TASKS,
       properties: ['tasks'],
       storage: window.localStorage,
     })

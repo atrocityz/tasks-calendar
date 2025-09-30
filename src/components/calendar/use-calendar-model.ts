@@ -1,4 +1,4 @@
-import { calendarStore } from '@/stores/calendar.store..ts'
+import { calendarStore } from '@/stores/calendar.store'
 import {
   eachDayOfInterval,
   endOfMonth,
