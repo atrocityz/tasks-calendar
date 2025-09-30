@@ -1,4 +1,3 @@
-import { useCalendarStore } from '@/stores/calendar.store..ts'
 import {
   eachDayOfInterval,
   endOfMonth,
@@ -7,6 +6,8 @@ import {
   startOfWeek,
 } from 'date-fns'
 import { useMemo } from 'react'
+import { useUnit } from 'effector-react'
+import { calendarStore } from '@/stores'
 
 const getCalendarDays = (date: Date) => {
   const monthStart = startOfMonth(date)
@@ -26,13 +27,14 @@ const getCalendarDays = (date: Date) => {
 }
 
 export function useCalendarModel() {
-  const {
-    currentDate,
-    selectedDate,
-    selectDate,
-    goToPrevMonth,
-    goToNextMonth,
-  } = useCalendarStore()
+  const [currentDate, selectedDate, goToNextMonth, goToPrevMonth, selectDate] =
+    useUnit([
+      calendarStore.$currentDate,
+      calendarStore.$selectedDate,
+      calendarStore.goToNextMonth,
+      calendarStore.goToPrevMonth,
+      calendarStore.selectDate,
+    ])
 
   const calendarDays = getCalendarDays(currentDate)
 

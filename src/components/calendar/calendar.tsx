@@ -5,12 +5,14 @@ import { MemoizedDay } from '@/components/calendar/ui/day'
 import { format, isSameMonth } from 'date-fns'
 import { ru } from 'date-fns/locale'
 import { useCalendarModel } from '@/components/calendar/use-calendar-model.ts'
-import { getTasksByDate, useTasksStore } from '@/stores/tasks.store.ts'
+import { getTasksByDate } from '@/stores/tasks.store.ts'
 import { useModal } from '@/hooks/use-modal.ts'
 import { CreateTaskModal } from '@/components/task-modals/create-task-modal.tsx'
+import { useUnit } from 'effector-react'
+import { tasksStore } from '@/stores'
 
 export function Calendar() {
-  const { tasks } = useTasksStore()
+  const tasks = useUnit(tasksStore.$tasks)
   const { closeModal, isOpen, openModal } = useModal()
   const calendarModel = useCalendarModel()
 

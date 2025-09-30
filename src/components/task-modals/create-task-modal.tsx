@@ -1,7 +1,7 @@
 import { TaskList } from '@/components/task-list.tsx'
 import { format } from 'date-fns'
 import { ru } from 'date-fns/locale'
-import { getTasksByDate, useTasksStore } from '@/stores/tasks.store.ts'
+import { getTasksByDate } from '@/stores/tasks.store.ts'
 import { useForm, type UseFormReset } from 'react-hook-form'
 import { toast } from 'sonner'
 import type { TaskImportance } from '@/types/task.types.ts'
@@ -10,6 +10,8 @@ import { FormLayout } from '@/components/task-modals/ui/form-layout.tsx'
 import { SubmitButton } from '@/components/task-modals/ui/submit-button.tsx'
 import { TaskTags } from '@/components/task-tags.tsx'
 import { TasksDrawer } from '@/components/task-modals/ui/drawer.tsx'
+import { useUnit } from 'effector-react'
+import { tasksStore } from '@/stores'
 
 export type CreateTaskForm = {
   taskName: string
@@ -28,7 +30,11 @@ export function CreateTaskModal({
   closeModal: () => void
   showTaskList?: boolean
 }) {
-  const { addTask, deleteTask, tasks } = useTasksStore()
+  const [addTask, deleteTask, tasks] = useUnit([
+    tasksStore.addTask,
+    tasksStore.deleteTask,
+    tasksStore.$tasks,
+  ])
 
   const currentTasks = date
     ? getTasksByDate(JSON.stringify(date), tasks)

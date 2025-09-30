@@ -1,55 +1,45 @@
-import { create } from 'zustand'
-import { persist } from 'zustand/middleware'
 import type { Task } from '@/types/task.types'
+import { persist } from 'effector-storage/local'
+import { createEvent, createStore } from 'effector'
+import { LOCAL_STORAGE_KEYS } from '@/lib/constants'
 
-interface TaskStore {
-  tasks: Task[]
-  addTask: (task: Omit<Task, 'id'>) => void
-  deleteTask: (taskId: string) => void
-  editTask: (taskId: string, data: Partial<Task>) => void
-}
+export const $tasks = createStore<Task[]>([])
+
+export const addTask = createEvent<Omit<Task, 'id'>>()
+export const deleteTask = createEvent<string>()
+export const editTask = createEvent<{ taskId: string; data: Partial<Task> }>()
+
+$tasks.on(addTask, (tasks, data) => {
+  const newTask = {
+    id: crypto.randomUUID(),
+    ...data,
+  } as Task
+
+  return [newTask, ...tasks]
+})
+
+$tasks.on(deleteTask, (tasks, taskId) =>
+  tasks.filter((task) => task.id !== taskId),
+)
+
+$tasks.on(editTask, (tasks, { taskId, data }) =>
+  tasks.map((task) => {
+    if (task.id === taskId) {
+      return {
+        ...task,
+        ...data,
+      }
+    }
+
+    return task
+  }),
+)
 
 export const getTasksByDate = (date: string, tasks: Task[]) => {
   return tasks.filter((task) => task.date === date)
 }
 
-export const useTasksStore = create<TaskStore>()(
-  persist(
-    (set) => ({
-      tasks: [],
-      addTask: (task) =>
-        set((state) => ({
-          tasks: [
-            {
-              id: crypto.randomUUID(),
-              ...task,
-            },
-            ...state.tasks,
-          ],
-        })),
-      deleteTask: (taskId) =>
-        set((state) => ({
-          tasks: state.tasks.filter((task) => task.id !== taskId),
-        })),
-      editTask: (taskId, data) =>
-        set((state) => ({
-          tasks: state.tasks.map((task) => {
-            if (task.id === taskId) {
-              return {
-                ...task,
-                ...data,
-              }
-            }
-
-            return task
-          }),
-        })),
-    }),
-    {
-      name: 'tasks',
-      partialize: (state) => ({
-        tasks: state.tasks,
-      }),
-    },
-  ),
-)
+persist({
+  store: $tasks,
+  key: LOCAL_STORAGE_KEYS.TASKS,
+})

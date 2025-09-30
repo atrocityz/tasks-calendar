@@ -1,4 +1,3 @@
-import { useTasksStore } from '@/stores/tasks.store.ts'
 import { Layout } from '@/components/tasks/ui/layout.tsx'
 import { useMemo, useState } from 'react'
 import { SearchField } from '@/components/tasks/ui/search-field.tsx'
@@ -8,9 +7,14 @@ import { Plus } from 'lucide-react'
 import { TaskList } from '@/components/task-list.tsx'
 import { useModal } from '@/hooks/use-modal.ts'
 import { CreateTaskModal } from '@/components/task-modals/create-task-modal.tsx'
+import { useUnit } from 'effector-react'
+import { tasksStore } from '@/stores'
 
 export function Tasks() {
-  const { tasks, deleteTask } = useTasksStore()
+  const [tasks, deleteTask] = useUnit([
+    tasksStore.$tasks,
+    tasksStore.deleteTask,
+  ])
   const { isOpen, openModal, closeModal } = useModal()
   const [searchValue, setSearchValue] = useState('')
 
