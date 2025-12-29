@@ -7,6 +7,29 @@ version: 2
 updates:
   - package-ecosystem: "npm" # See documentation for possible values
     directory: "/" # Location of package manifests
+    target-branch: "main"
+    schedule:
+      interval: "monthly"
+    groups:
+        production-dependencies:
+          dependency-type: "production"
+        development-dependencies:
+          dependency-type: "development"
+          
+  - package-ecosystem: "npm" # See documentation for possible values
+    directory: "/" # Location of package manifests
+    target-branch: "stores/mobx"
+    schedule:
+      interval: "monthly"
+    groups:
+        production-dependencies:
+          dependency-type: "production"
+        development-dependencies:
+          dependency-type: "development"
+
+  - package-ecosystem: "npm" # See documentation for possible values
+    directory: "/" # Location of package manifests
+    target-branch: "stores/effector"
     schedule:
       interval: "monthly"
     groups:
