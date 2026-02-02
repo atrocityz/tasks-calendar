@@ -10,6 +10,7 @@ updates:
     target-branch: "main"
     schedule:
       interval: "monthly"
+    open-pull-requests-limit: 0 # Disable pull request for dependabot
     groups:
         production-dependencies:
           dependency-type: "production"
@@ -21,6 +22,7 @@ updates:
     target-branch: "stores/mobx"
     schedule:
       interval: "monthly"
+    open-pull-requests-limit: 0 # Disable pull request for dependabot
     groups:
         production-dependencies:
           dependency-type: "production"
@@ -32,6 +34,7 @@ updates:
     target-branch: "stores/effector"
     schedule:
       interval: "monthly"
+    open-pull-requests-limit: 0 # Disable pull request for dependabot
     groups:
         production-dependencies:
           dependency-type: "production"
